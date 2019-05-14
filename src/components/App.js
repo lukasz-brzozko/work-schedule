@@ -1,10 +1,12 @@
 import React from "react";
-import "./App.css";
+import "./css/App.css";
 import Input from "./Input";
+import DayInfo from "./DayInfo";
+import GlobalVars from "./GlobalVars";
 
 class App extends React.Component {
   state = {
-    inputValue: "",
+    inputValue: GlobalVars.today,
     todayResultContent: ""
   };
 
@@ -26,6 +28,7 @@ class App extends React.Component {
             value={this.state.inputValue}
             change={this.handleInputChange}
           />
+          <DayInfo />
         </section>
       </React.Fragment>
     );
