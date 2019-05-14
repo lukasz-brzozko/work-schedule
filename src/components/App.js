@@ -2,11 +2,11 @@ import React from "react";
 import "./css/App.css";
 import Input from "./Input";
 import DayInfo from "./DayInfo";
-import GlobalVars from "./GlobalVars";
+import { today } from "./GlobalVars";
 
 class App extends React.Component {
   state = {
-    inputValue: GlobalVars.today,
+    inputValue: today,
     todayResultContent: ""
   };
 
@@ -30,9 +30,31 @@ class App extends React.Component {
           />
           <DayInfo />
         </section>
+        <section id="next-days">
+          <DayInfo
+            date={this.state.inputValue}
+            miliseconds="86400000"
+            answer={this.state.oneDayLaterResultContent}
+            loaderVisibility={this.state.imgVisible}
+          />
+          {/* 1 day later*/}
+          <DayInfo
+            date={this.state.inputValue}
+            miliseconds="172800000"
+            answer={this.state.twoDaysLaterResultContent}
+            loaderVisibility={this.state.imgVisible}
+          />
+          {/* 2 days later*/}
+          <DayInfo
+            date={this.state.inputValue}
+            miliseconds="259200000"
+            answer={this.state.threeDaysLaterResultContent}
+            loaderVisibility={this.state.imgVisible}
+          />
+          {/* 3 days later*/}
+        </section>
       </React.Fragment>
     );
   }
 }
-
 export default App;

@@ -15,7 +15,7 @@ const DayInfo = props => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    GlobalVars.nextDay = `${weekday}, ${day < 10 ? "0" + day : day}.${
+    nextDay = `${weekday}, ${day < 10 ? "0" + day : day}.${
       month < 10 ? "0" + month : month
     }.${year}`;
     if (nextDay.length === 9) {
