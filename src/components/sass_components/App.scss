@@ -3,4 +3,32 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .title {
+        letter-spacing: 1px;
+    }
+
+    .container {
+        position: relative;
+        height: 150px;
+        //input mixin
+        width: 252px;
+        margin: 30px auto;
+        border-radius: 10px;
+        border-style: none;
+        background-color: rgba(255, 255, 255, 0.85);
+        text-align: center;
+
+        .result {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            font-weight: bold;
+            font-size: 32px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+    }
 }

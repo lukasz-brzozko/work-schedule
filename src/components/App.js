@@ -1,19 +1,26 @@
 import React from "react";
 import "./css/App.css";
 import Input from "./Input";
+import Loader from "./Loader";
 import DayInfo from "./DayInfo";
 import { today } from "./GlobalVars";
 
 class App extends React.Component {
   state = {
     inputValue: today,
-    todayResultContent: ""
+    todayResultContent: "",
+    oneDayLaterResultContent: "",
+    twoDaysLaterResultContent: "",
+    threeDaysLaterResultContent: ""
   };
 
   handleInputChange = e => {
     this.setState({
       inputValue: e.target.value,
-      todayResultContent: ""
+      todayResultContent: "",
+      oneDayLaterResultContent: "",
+      twoDaysLaterResultContent: "",
+      threeDaysLaterResultContent: ""
     });
   };
 
@@ -24,11 +31,19 @@ class App extends React.Component {
           <header>
             <h1 className="title">Wybierz dzień</h1>
           </header>
-          <Input
-            value={this.state.inputValue}
-            change={this.handleInputChange}
-          />
-          <DayInfo />
+          <div className="center">
+            <Input
+              value={this.state.inputValue}
+              change={this.handleInputChange}
+            />
+            <div className="container">
+              {this.state.imgVisible ? <Loader /> : null}
+
+              <span id="main-result" className="result">
+                {this.state.todayResultContent}
+              </span>
+            </div>
+          </div>
         </section>
         <section id="next-days">
           <DayInfo

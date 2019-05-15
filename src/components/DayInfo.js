@@ -1,4 +1,5 @@
 import React from "react";
+import "./css/DayInfo.css";
 import Loader from "./Loader";
 import GlobalVars from "./GlobalVars";
 

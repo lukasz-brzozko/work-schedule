@@ -13,4 +13,32 @@
       -ms-flex-align: center;
           align-items: center;
 }
+
+.now-section .title {
+  letter-spacing: 1px;
+}
+
+.now-section .container {
+  position: relative;
+  height: 150px;
+  width: 252px;
+  margin: 30px auto;
+  border-radius: 10px;
+  border-style: none;
+  background-color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+}
+
+.now-section .container .result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 90%;
+  font-weight: bold;
+  font-size: 32px;
+  text-transform: uppercase;
+  text-align: center;
+}
 /*# sourceMappingURL=App.css.map */
