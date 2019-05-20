@@ -18,5 +18,33 @@
         border-style: none;
         background-color: rgba(255, 255, 255, 0.85);
         text-align: center;
+
+        .result {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            font-weight: bold;
+            font-size: 32px;
+            text-transform: uppercase;
+            text-align: center;
+
+            &.day {
+                color: #e67e22;
+            }
+
+            &.night {
+                color: #2980b9;
+            }
+
+            &.day-off {
+                color: #169d50;
+            }
+
+            &.no-data {
+                color: #c0392b;
+            }
+        }
     }
 }

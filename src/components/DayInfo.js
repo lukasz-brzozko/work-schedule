@@ -10,7 +10,6 @@ const DayInfo = props => {
     const stateDatePlusMiliseconds =
       new Date(props.date).getTime() + parseInt(props.miliseconds);
     const date = new Date(stateDatePlusMiliseconds);
-
     const weekdays = ["nie.", "pon.", "wto.", "śr.", "czw.", "pt.", "sob."];
     const weekday = weekdays[date.getDay()];
     const year = date.getFullYear();
