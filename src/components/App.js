@@ -3,7 +3,7 @@ import "./css/App.css";
 import Input from "./Input";
 import Loader from "./Loader";
 import DayInfo from "./DayInfo";
-import { today } from "./GlobalVars";
+import { today, fetchErrTxt } from "./GlobalVars";
 class App extends React.Component {
   state = {
     inputValue: today,
@@ -11,7 +11,8 @@ class App extends React.Component {
     oneDayLaterResultContent: "",
     twoDaysLaterResultContent: "",
     threeDaysLaterResultContent: "",
-    imgVisible: true
+    mainLoaderVisible: true,
+    nxtDaysloaderVisible: true
   };
 
   handleInputChange = e => {
@@ -21,7 +22,8 @@ class App extends React.Component {
       oneDayLaterResultContent: "",
       twoDaysLaterResultContent: "",
       threeDaysLaterResultContent: "",
-      imgVisible: true
+      mainLoaderVisible: true,
+      nxtDaysloaderVisible: true
     });
     this.fetchData(e.target.value);
   };
@@ -32,7 +34,7 @@ class App extends React.Component {
       useGrouping: false
     });
 
-  fetchData = (date, dayOffset) => {
+  fetchData = date => {
     fetch(
       `https://schedule-20022.firebaseio.com/workdays/items.json?orderBy=%22day%22&equalTo=%22${date}%22`
     )
@@ -52,7 +54,7 @@ class App extends React.Component {
         const endData = this.formatID(objectID + 3);
 
         this.setState({
-          imgVisible: false,
+          mainLoaderVisible: false,
           todayResultContent: result
         });
         return fetch(
@@ -66,17 +68,23 @@ class App extends React.Component {
             const threeDaysRes = nextRes[keyNames[2]].work;
             console.log(nextRes);
             this.setState({
+              nxtDaysloaderVisible: false,
               oneDayLaterResultContent: oneDayRes,
               twoDaysLaterResultContent: twoDaysRes,
               threeDaysLaterResultContent: threeDaysRes
             });
           });
       })
+      //COME BACK HERE LATER
       .catch(err => {
         console.log(err);
         this.setState({
-          imgVisible: false,
-          todayResultContent: "Brak danych"
+          mainLoaderVisible: false,
+          todayResultContent: fetchErrTxt,
+          nxtDaysloaderVisible: false,
+          oneDayLaterResultContent: fetchErrTxt,
+          twoDaysLaterResultContent: fetchErrTxt,
+          threeDaysLaterResultContent: fetchErrTxt
         });
       });
   };
@@ -88,7 +96,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <section id="now" className="now-section">
-          <header>
+          <header className="title-header">
             <h1 className="title">Wybierz dzień</h1>
           </header>
           <div className="center">
@@ -96,8 +104,8 @@ class App extends React.Component {
               value={this.state.inputValue}
               change={this.handleInputChange}
             />
-            <div className="container">
-              {this.state.imgVisible ? <Loader /> : null}
+            <div className="container main">
+              {this.state.mainLoaderVisible ? <Loader /> : null}
 
               <span id="main-result" className="result">
                 {this.state.todayResultContent}
@@ -110,21 +118,21 @@ class App extends React.Component {
             date={this.state.inputValue}
             miliseconds="86400000"
             answer={this.state.oneDayLaterResultContent}
-            loaderVisibility={this.state.imgVisible}
+            loaderVisibility={this.state.nxtDaysloaderVisible}
           />
           {/* 1 day later*/}
           <DayInfo
             date={this.state.inputValue}
             miliseconds="172800000"
             answer={this.state.twoDaysLaterResultContent}
-            loaderVisibility={this.state.imgVisible}
+            loaderVisibility={this.state.nxtDaysloaderVisible}
           />
           {/* 2 days later*/}
           <DayInfo
             date={this.state.inputValue}
             miliseconds="259200000"
             answer={this.state.threeDaysLaterResultContent}
-            loaderVisibility={this.state.imgVisible}
+            loaderVisibility={this.state.nxtDaysloaderVisible}
           />
           {/* 3 days later*/}
         </section>

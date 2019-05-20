@@ -1,42 +1,85 @@
-.now-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+// RESET
+* {
+    margin: 0;
+    padding: 0;
+}
 
-    .title {
-        letter-spacing: 1px;
+@import '_variables.scss';
+@import '_mixins.scss';
+
+html {
+    font-size: $html-fz;
+}
+
+body {
+    font-family: $web-font;
+}
+
+.now-section {
+    height: 100vh;
+    text-align: center;
+
+    .title-header {
+        width: 100%;
+
+        .title {
+            font-size: 2.4rem;
+            color: #fff;
+            background-color: rgba(0, 0, 0, .5);
+            padding: 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
     }
 
-    .container {
-        position: relative;
-        height: 150px;
-        //input mixin
-        width: 252px;
-        margin: 30px auto;
-        border-radius: 10px;
-        border-style: none;
-        background-color: rgba(255, 255, 255, 0.85);
-        text-align: center;
-
-        .result {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            font-weight: bold;
-            font-size: 32px;
-            text-transform: uppercase;
-            text-align: center;
-        }
+    .center {
+        @include pos-abs-cen;
     }
 }
 
 .next-days-section {
+    height: 100vh;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     width: 90%;
     margin: 0 auto;
+}
+
+.container {
+    position: relative;
+    height: $cont-h;
+    @include box-style;
+
+    &.main {
+        height: 150px;
+    }
+
+    .result {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        font-weight: bold;
+        font-size: 3.2rem;
+        text-transform: uppercase;
+        text-align: center;
+
+        &.day {
+            color: #e67e22;
+        }
+
+        &.night {
+            color: #2980b9;
+        }
+
+        &.day-off {
+            color: #169d50;
+        }
+
+        &.no-data {
+            color: #c0392b;
+        }
+    }
 }

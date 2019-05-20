@@ -10,14 +10,13 @@
 }
 
 .flex-wrapper .label {
-  font-size: 2em;
+  font-size: 2.6rem;
   color: #eee;
   text-align: center;
 }
 
 .flex-wrapper .container {
   position: relative;
-  height: 150px;
   width: 252px;
   margin: 30px auto;
   border-radius: 10px;
@@ -26,32 +25,8 @@
   text-align: center;
 }
 
-.flex-wrapper .container .result {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  width: 90%;
-  font-weight: bold;
-  font-size: 32px;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.flex-wrapper .container .result.day {
-  color: #e67e22;
-}
-
-.flex-wrapper .container .result.night {
-  color: #2980b9;
-}
-
-.flex-wrapper .container .result.day-off {
-  color: #169d50;
-}
-
-.flex-wrapper .container .result.no-data {
-  color: #c0392b;
+.flex-wrapper .container.next {
+  margin-top: 10px;
+  height: 75px;
 }
 /*# sourceMappingURL=DayInfo.css.map */

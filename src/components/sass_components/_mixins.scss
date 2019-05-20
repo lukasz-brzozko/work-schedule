@@ -1,0 +1,21 @@
+@mixin box-style {
+    width: 252px;
+    margin: 30px auto;
+    border-radius: 10px;
+    border-style: none;
+    background-color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+}
+
+@mixin pos-abs-cen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin mq($width) {
+    @media only screen and (min-width: $width) {
+        @content
+    }
+}
