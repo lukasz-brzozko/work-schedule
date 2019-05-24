@@ -3,6 +3,7 @@ import "./css/App.css";
 import Input from "./Input";
 import Loader from "./Loader";
 import DayInfo from "./DayInfo";
+import Arrows from "./Arrows";
 import { today, fetchErrTxt } from "./GlobalVars";
 class App extends React.Component {
   state = {
@@ -26,6 +27,14 @@ class App extends React.Component {
       nxtDaysloaderVisible: true
     });
     this.fetchData(e.target.value);
+  };
+  handleButtonClick = e => {
+    const nextDaysSec = document.getElementById("next-days");
+    nextDaysSec.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "center"
+    });
   };
 
   formatID = number =>
@@ -106,12 +115,12 @@ class App extends React.Component {
             />
             <div className="container main">
               {this.state.mainLoaderVisible ? <Loader /> : null}
-
               <span id="main-result" className="result">
                 {this.state.todayResultContent}
               </span>
             </div>
           </div>
+          <Arrows click={this.handleButtonClick} />
         </section>
         <section id="next-days" className="next-days-section">
           <DayInfo

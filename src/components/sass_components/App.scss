@@ -19,21 +19,29 @@ body {
     height: 100vh;
     text-align: center;
 
+    @include mq($small-w) {
+        height: auto;
+    }
+
     .title-header {
         width: 100%;
 
         .title {
-            font-size: 2.4rem;
-            color: #fff;
-            background-color: rgba(0, 0, 0, .5);
+            @include title-txt;
+            background-color: $btn-bgc;
             padding: 15px 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
         }
     }
 
     .center {
         @include pos-abs-cen;
+
+        @include mq($small-w) {
+            position: static;
+            top: auto;
+            left: auto;
+            transform: none;
+        }
     }
 }
 

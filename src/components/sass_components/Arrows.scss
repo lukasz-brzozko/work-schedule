@@ -1,0 +1,100 @@
+@import '_variables.scss';
+@import '_mixins.scss';
+
+
+.button.next-day-container {
+    @include mq($small-w) {
+        display: none;
+    }
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    background-color: $btn-bgc;
+    border-style: none;
+    outline: none;
+    background-color: $btn-bgc;
+
+    .show-more.mobile {
+        background-color: transparent;
+        margin-bottom: 0;
+    }
+
+
+    .show-more {
+        @include title-txt;
+        font-weight: bold;
+    }
+
+    .arrows {
+        display: block;
+        position: absolute;
+        color: $arr-color;
+        font-size: 30px;
+
+        &.left,
+        &.right {
+            bottom: 44px;
+        }
+
+        &.left {
+            left: 26px;
+        }
+
+        &.right {
+            right: 44px;
+        }
+
+        .fa-angle-down {
+            @include pos-abs-cen;
+            animation: light-wave 1.5s linear infinite;
+
+            &:nth-of-type(1) {
+
+                transform: translateY(-50%);
+            }
+
+            &:nth-of-type(2) {
+
+                transform: translateY(-10%);
+                animation-delay: .2s
+            }
+
+            &:nth-of-type(3) {
+
+                transform: translateY(30%);
+                animation-delay: .4s
+            }
+        }
+    }
+}
+
+@keyframes light-wave {
+
+    0% {
+        color: #777;
+        text-shadow: 0 0 0
+    }
+
+    20% {
+        color: #eee;
+        text-shadow: 0 0 5px #fff, 0 0 8px #fff
+    }
+
+    30% {
+        color: #eee;
+        text-shadow: 0 0 5px #fff, 0 0 8px #fff
+    }
+
+    50% {
+        color: #777;
+        text-shadow: 0 0 0
+    }
+
+    100% {
+        color: #777;
+        text-shadow: 0 0 0
+    }
+}
