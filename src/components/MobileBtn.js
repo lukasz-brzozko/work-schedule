@@ -1,5 +1,5 @@
 import React from "react";
-import "./css/Arrows.css";
+import "./css/MobileBtn.css";
 import { arrowType } from "./GlobalVars";
 
 const MobileBtn = props => (

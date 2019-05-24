@@ -11,6 +11,12 @@
     width: 100%;
     border-style: none;
     outline: none;
+    background-color: $btn-bgc;
+
+    .show-more.mobile {
+        background-color: transparent;
+        margin-bottom: 0;
+    }
 
     .arrows {
         display: block;

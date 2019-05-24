@@ -6,6 +6,12 @@
   width: 100%;
   border-style: none;
   outline: none;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.button.next-day-container .show-more.mobile {
+  background-color: transparent;
+  margin-bottom: 0;
 }
 
 .button.next-day-container .arrows {
