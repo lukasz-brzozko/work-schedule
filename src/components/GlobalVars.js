@@ -1,3 +1,4 @@
+export const arrowType = "fas fa-angle-down";
 const date = new Date();
 const year = date.getFullYear();
 const month = date.getMonth() + 1;

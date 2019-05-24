@@ -7,6 +7,13 @@
     text-align: center;
 }
 
+@mixin title-txt {
+    font-size: 2.4rem;
+    color: #fff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 @mixin pos-abs-cen {
     position: absolute;
     top: 50%;

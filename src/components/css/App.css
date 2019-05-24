@@ -16,6 +16,12 @@ body {
   text-align: center;
 }
 
+@media only screen and (min-width: 414px) {
+  .now-section {
+    height: auto;
+  }
+}
+
 .now-section .title-header {
   width: 100%;
 }
@@ -23,10 +29,10 @@ body {
 .now-section .title-header .title {
   font-size: 2.4rem;
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 15px 0;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 15px 0;
 }
 
 .now-section .center {
@@ -35,6 +41,16 @@ body {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+
+@media only screen and (min-width: 414px) {
+  .now-section .center {
+    position: static;
+    top: auto;
+    left: auto;
+    -webkit-transform: none;
+            transform: none;
+  }
 }
 
 .next-days-section {
