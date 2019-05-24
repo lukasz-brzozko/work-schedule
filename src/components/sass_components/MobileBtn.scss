@@ -3,30 +3,21 @@
 
 
 .button.next-day-container {
-    @include mq($small-w) {
-        display: none;
-    }
 
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 60px;
+    height: $btn-h;
     width: 100%;
-    background-color: $btn-bgc;
     border-style: none;
     outline: none;
-
-
-    .show-more {
-        @include title-txt;
-        font-weight: bold;
-    }
 
     .arrows {
         display: block;
         position: absolute;
         color: $arr-color;
         font-size: 30px;
+
 
         &.left,
         &.right {

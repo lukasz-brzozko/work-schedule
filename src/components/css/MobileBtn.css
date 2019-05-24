@@ -4,23 +4,8 @@
   left: 0;
   height: 60px;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
   border-style: none;
   outline: none;
-}
-
-@media only screen and (min-width: 414px) {
-  .button.next-day-container {
-    display: none;
-  }
-}
-
-.button.next-day-container .show-more {
-  font-size: 2.4rem;
-  color: #fff;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-weight: bold;
 }
 
 .button.next-day-container .arrows {
@@ -116,4 +101,4 @@
     text-shadow: 0 0 0;
   }
 }
-/*# sourceMappingURL=Arrows.css.map */
+/*# sourceMappingURL=MobileBtn.css.map */

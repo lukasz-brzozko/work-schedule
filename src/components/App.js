@@ -3,7 +3,7 @@ import "./css/App.css";
 import Input from "./Input";
 import Loader from "./Loader";
 import DayInfo from "./DayInfo";
-import Arrows from "./Arrows";
+import MobileBtn from "./MobileBtn";
 import { today, fetchErrTxt } from "./GlobalVars";
 class App extends React.Component {
   state = {
@@ -13,7 +13,8 @@ class App extends React.Component {
     twoDaysLaterResultContent: "",
     threeDaysLaterResultContent: "",
     mainLoaderVisible: true,
-    nxtDaysloaderVisible: true
+    nxtDaysloaderVisible: true,
+    mobileCompVisible: false
   };
 
   handleInputChange = e => {
@@ -28,7 +29,7 @@ class App extends React.Component {
     });
     this.fetchData(e.target.value);
   };
-  handleButtonClick = e => {
+  handleButtonClick = () => {
     const nextDaysSec = document.getElementById("next-days");
     nextDaysSec.scrollIntoView({
       behavior: "smooth",
@@ -42,6 +43,14 @@ class App extends React.Component {
       minimumIntegerDigits: 3,
       useGrouping: false
     });
+
+  checkStateForMobileComponents = () => {
+    const width = window.innerWidth;
+    // const height = window.innerHeight;
+
+    if (width < 411) this.setState({ mobileCompVisible: true });
+    else this.setState({ mobileCompVisible: false });
+  };
 
   fetchData = date => {
     fetch(
@@ -98,7 +107,12 @@ class App extends React.Component {
       });
   };
   componentDidMount() {
+    this.checkStateForMobileComponents();
     this.fetchData(today);
+    window.addEventListener("resize", this.checkStateForMobileComponents);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.checkStateForMobileComponents);
   }
 
   render() {
@@ -120,7 +134,11 @@ class App extends React.Component {
               </span>
             </div>
           </div>
-          <Arrows click={this.handleButtonClick} />
+          {this.state.mobileCompVisible ? (
+            <MobileBtn click={this.handleButtonClick} />
+          ) : (
+            <p className="show-more">Kolejne 3 dni</p>
+          )}
         </section>
         <section id="next-days" className="next-days-section">
           <DayInfo
