@@ -3,9 +3,7 @@
 
 
 .button.next-day-container {
-    @include mq($small-w) {
-        display: none;
-    }
+
 
     position: absolute;
     bottom: 0;
@@ -20,12 +18,6 @@
     .show-more.mobile {
         background-color: transparent;
         margin-bottom: 0;
-    }
-
-
-    .show-more {
-        @include title-txt;
-        font-weight: bold;
     }
 
     .arrows {

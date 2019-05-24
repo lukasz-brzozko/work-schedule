@@ -13,7 +13,8 @@ class App extends React.Component {
     twoDaysLaterResultContent: "",
     threeDaysLaterResultContent: "",
     mainLoaderVisible: true,
-    nxtDaysloaderVisible: true
+    nxtDaysloaderVisible: true,
+    mobCompisVisible: false
   };
 
   handleInputChange = e => {
@@ -42,6 +43,12 @@ class App extends React.Component {
       minimumIntegerDigits: 3,
       useGrouping: false
     });
+
+  checkStateForMobComp = () => {
+    const width = window.innerWidth;
+    if (width < 414) this.setState({ mobCompisVisible: true });
+    else this.setState({ mobCompisVisible: false });
+  };
 
   fetchData = date => {
     fetch(
@@ -98,9 +105,13 @@ class App extends React.Component {
       });
   };
   componentDidMount() {
+    this.checkStateForMobComp();
     this.fetchData(today);
+    window.addEventListener("resize", this.checkStateForMobComp);
   }
-
+  componentWillUnmount() {
+    window.removEventListener("resize", this.checkStateForMobComp);
+  }
   render() {
     return (
       <React.Fragment>
@@ -120,7 +131,11 @@ class App extends React.Component {
               </span>
             </div>
           </div>
-          <Arrows click={this.handleButtonClick} />
+          {this.state.mobCompisVisible ? (
+            <Arrows click={this.handleButtonClick} />
+          ) : (
+            <p className="show-more">Kolejne 3 dni</p>
+          )}
         </section>
         <section id="next-days" className="next-days-section">
           <DayInfo

@@ -43,6 +43,16 @@ body {
             transform: none;
         }
     }
+
+    .show-more {
+        @include title-txt;
+        font-weight: bold;
+        height: $btn-h;
+        line-height: $btn-h;
+        width: 100%;
+        background-color: $btn-bgc;
+        margin-bottom: 100px;
+    }
 }
 
 .next-days-section {
