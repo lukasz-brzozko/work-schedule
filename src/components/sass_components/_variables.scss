@@ -1,11 +1,17 @@
+//Font
 $html-fz: 10px;
 $web-font: 'Roboto',
 sans-serif;
 
+//Dimensions
 $btn-bgc: rgba(0, 0, 0, .4);
 $btn-h: 60px;
 $arr-color: #777;
-$cont-h: 75px;
+
+$cont-marg-top: 20px;
+$cont-h: 15vh;
+$cont-minh: 75px;
+$cont-maxh: 150px;
 
 //MEDIA QUERY RESOLUTIONS
 $small-w: 414px;

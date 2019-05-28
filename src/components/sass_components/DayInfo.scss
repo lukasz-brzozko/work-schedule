@@ -4,7 +4,7 @@
 .flex-wrapper {
     display: flex;
     flex-direction: column;
-    margin-top: 0;
+    margin-top: $cont-marg-top;
 
     .label {
         font-size: 2.6rem;
@@ -19,6 +19,8 @@
         &.next {
             margin-top: 10px;
             height: $cont-h;
+            max-height: $cont-maxh;
+            min-height: $cont-minh;
         }
     }
 }
