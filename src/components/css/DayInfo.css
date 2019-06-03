@@ -6,7 +6,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  margin-top: 0;
+  margin-bottom: 30px;
 }
 
 .flex-wrapper .label {
@@ -18,7 +18,7 @@
 .flex-wrapper .container {
   position: relative;
   width: 252px;
-  margin: 30px auto;
+  margin: 0 auto;
   border-radius: 10px;
   border-style: none;
   background-color: rgba(255, 255, 255, 0.85);
@@ -27,6 +27,8 @@
 
 .flex-wrapper .container.next {
   margin-top: 10px;
-  height: 75px;
+  height: 15vh;
+  max-height: 150px;
+  min-height: 75px;
 }
 /*# sourceMappingURL=DayInfo.css.map */

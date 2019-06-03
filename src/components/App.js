@@ -3,7 +3,7 @@ import "./css/App.css";
 import Input from "./Input";
 import Loader from "./Loader";
 import DayInfo from "./DayInfo";
-import MobileBtn from "./MobileBtn";
+import Arrows from "./Arrows";
 import { today, fetchErrTxt } from "./GlobalVars";
 class App extends React.Component {
   state = {
@@ -14,7 +14,7 @@ class App extends React.Component {
     threeDaysLaterResultContent: "",
     mainLoaderVisible: true,
     nxtDaysloaderVisible: true,
-    mobileCompVisible: false
+    mobCompisVisible: false
   };
 
   handleInputChange = e => {
@@ -29,11 +29,12 @@ class App extends React.Component {
     });
     this.fetchData(e.target.value);
   };
-  handleButtonClick = () => {
+  handleButtonClick = e => {
     const nextDaysSec = document.getElementById("next-days");
     nextDaysSec.scrollIntoView({
       behavior: "smooth",
-      block: "start",
+      // block: "start",
+      block: "center",
       inline: "center"
     });
   };
@@ -44,12 +45,10 @@ class App extends React.Component {
       useGrouping: false
     });
 
-  checkStateForMobileComponents = () => {
+  checkStateForMobComp = () => {
     const width = window.innerWidth;
-    // const height = window.innerHeight;
-
-    if (width < 411) this.setState({ mobileCompVisible: true });
-    else this.setState({ mobileCompVisible: false });
+    if (width < 415) this.setState({ mobCompisVisible: true });
+    else this.setState({ mobCompisVisible: false });
   };
 
   fetchData = date => {
@@ -107,14 +106,13 @@ class App extends React.Component {
       });
   };
   componentDidMount() {
-    this.checkStateForMobileComponents();
+    this.checkStateForMobComp();
     this.fetchData(today);
-    window.addEventListener("resize", this.checkStateForMobileComponents);
+    window.addEventListener("resize", this.checkStateForMobComp);
   }
   componentWillUnmount() {
-    window.removeEventListener("resize", this.checkStateForMobileComponents);
+    window.removEventListener("resize", this.checkStateForMobComp);
   }
-
   render() {
     return (
       <React.Fragment>
@@ -134,8 +132,8 @@ class App extends React.Component {
               </span>
             </div>
           </div>
-          {this.state.mobileCompVisible ? (
-            <MobileBtn click={this.handleButtonClick} />
+          {this.state.mobCompisVisible ? (
+            <Arrows click={this.handleButtonClick} />
           ) : (
             <p className="show-more">Kolejne 3 dni</p>
           )}

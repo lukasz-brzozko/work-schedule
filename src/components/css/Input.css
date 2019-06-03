@@ -1,13 +1,17 @@
 .date {
   display: block;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   height: 75px;
+  padding: 20px 0;
   font-size: 2.6rem;
   outline: none;
   width: 252px;
-  margin: 30px auto;
+  margin: 0 auto;
   border-radius: 10px;
   border-style: none;
   background-color: rgba(255, 255, 255, 0.85);
   text-align: center;
+  margin-bottom: 20px;
 }
 /*# sourceMappingURL=Input.css.map */

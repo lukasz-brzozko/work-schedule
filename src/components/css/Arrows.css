@@ -4,6 +4,7 @@
   left: 0;
   height: 60px;
   width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
   border-style: none;
   outline: none;
   background-color: rgba(0, 0, 0, 0.4);
@@ -107,4 +108,4 @@
     text-shadow: 0 0 0;
   }
 }
-/*# sourceMappingURL=MobileBtn.css.map */
+/*# sourceMappingURL=Arrows.css.map */

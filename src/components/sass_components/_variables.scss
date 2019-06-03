@@ -1,12 +1,30 @@
+//Font
 $html-fz: 10px;
 $web-font: 'Roboto',
 sans-serif;
+$title-fz: 2.5rem;
+$higher-title-fz: 3rem;
+$label-fz: 2.6rem;
+$result-fz: 3.2rem;
+
+
+//Dimensions
+$inp-h: 75px;
+$inp-marg-bot: 20px;
 
 $btn-bgc: rgba(0, 0, 0, .4);
 $btn-h: 60px;
 $arr-color: #777;
-$cont-h: 75px;
+
+$cont-h: 15vh;
+$cont-minh: 75px;
+$cont-maxh: 150px;
+$cont-marg-top: 10px;
+
+$flexwrap-marg-bot: 30px;
 
 //MEDIA QUERY RESOLUTIONS
-$small-w: 414px;
 $pop-w: 360px;
+$small-w: 415px;
+$medium-w: 768px;
+$desktop-w: 1024px;

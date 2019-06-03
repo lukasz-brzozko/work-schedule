@@ -4,11 +4,13 @@
 
 .button.next-day-container {
 
+
     position: absolute;
     bottom: 0;
     left: 0;
-    height: $btn-h;
+    height: 60px;
     width: 100%;
+    background-color: $btn-bgc;
     border-style: none;
     outline: none;
     background-color: $btn-bgc;
@@ -23,7 +25,6 @@
         position: absolute;
         color: $arr-color;
         font-size: 30px;
-
 
         &.left,
         &.right {

@@ -1,8 +1,8 @@
 import React from "react";
-import "./css/MobileBtn.css";
+import "./css/Arrows.css";
 import { arrowType } from "./GlobalVars";
 
-const MobileBtn = props => (
+const Arrows = props => (
   <button className="next-day-container button" onClick={props.click}>
     <p className="show-more mobile">Kolejne 3 dni</p>
     <div className="arrows right">
@@ -17,4 +17,4 @@ const MobileBtn = props => (
     </div>
   </button>
 );
-export default MobileBtn;
+export default Arrows;
