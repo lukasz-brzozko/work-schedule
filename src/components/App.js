@@ -120,6 +120,9 @@ class App extends React.Component {
           });
       })
       .catch(err => {
+        document
+          .querySelectorAll(".result")
+          .forEach(result => (result.className = "result no-data"));
         this.setState({
           mainLoaderVisible: false,
           todayResultContent: fetchErrTxt,
