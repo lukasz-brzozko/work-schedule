@@ -47,10 +47,6 @@ body {
             transform: none;
             margin: 8vh auto;
         }
-
-        @include mq-hor-w ($desktop-w) {
-            margin: 30px auto;
-        }
     }
 
     .show-more {

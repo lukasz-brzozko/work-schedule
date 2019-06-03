@@ -51,6 +51,29 @@ class App extends React.Component {
     else this.setState({ mobCompisVisible: false });
   };
 
+  setTxtColor = (resultDay, index) => {
+    let results;
+    if (index === 1) {
+      results = document.querySelectorAll("#main-result");
+    } else {
+      results = document.querySelectorAll(".next-days-section .result");
+    }
+    results.forEach((result, index) => {
+      switch (resultDay[index]) {
+        case "NA DZIEŃ":
+          result.className = "result day";
+          break;
+        case "NA NOC":
+          result.className = " result night";
+          break;
+        case "BRAK DANYCH":
+          result.className = "result no-data";
+          break;
+        default:
+          result.className = "result day-off";
+      }
+    });
+  };
   fetchData = date => {
     fetch(
       `https://schedule-20022.firebaseio.com/workdays/items.json?orderBy=%22day%22&equalTo=%22${date}%22`
@@ -64,11 +87,12 @@ class App extends React.Component {
       })
       .then(res => {
         const keyName = Object.keys(res);
-        const result = res[keyName[0]].work;
+        const result = [res[keyName[0]].work];
         let objectID = res[keyName[0]].id;
         objectID = parseInt(objectID);
         const startData = this.formatID(objectID + 1);
         const endData = this.formatID(objectID + 3);
+        this.setTxtColor(result, 1);
 
         this.setState({
           mainLoaderVisible: false,
@@ -80,10 +104,13 @@ class App extends React.Component {
           .then(response => response.json())
           .then(nextRes => {
             const keyNames = Object.keys(nextRes);
+            const result = [];
             const oneDayRes = nextRes[keyNames[0]].work;
             const twoDaysRes = nextRes[keyNames[1]].work;
             const threeDaysRes = nextRes[keyNames[2]].work;
-            console.log(nextRes);
+
+            result.push(oneDayRes, twoDaysRes, threeDaysRes);
+            this.setTxtColor(result, 2);
             this.setState({
               nxtDaysloaderVisible: false,
               oneDayLaterResultContent: oneDayRes,
@@ -92,9 +119,7 @@ class App extends React.Component {
             });
           });
       })
-      //COME BACK HERE LATER
       .catch(err => {
-        console.log(err);
         this.setState({
           mainLoaderVisible: false,
           todayResultContent: fetchErrTxt,
