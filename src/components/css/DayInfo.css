@@ -6,7 +6,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .flex-wrapper .label {
@@ -18,7 +18,7 @@
 .flex-wrapper .container {
   position: relative;
   width: 252px;
-  margin: 30px auto;
+  margin: 0 auto;
   border-radius: 10px;
   border-style: none;
   background-color: rgba(255, 255, 255, 0.85);

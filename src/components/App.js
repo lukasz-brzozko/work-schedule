@@ -33,7 +33,8 @@ class App extends React.Component {
     const nextDaysSec = document.getElementById("next-days");
     nextDaysSec.scrollIntoView({
       behavior: "smooth",
-      block: "start",
+      // block: "start",
+      block: "center",
       inline: "center"
     });
   };
@@ -46,7 +47,7 @@ class App extends React.Component {
 
   checkStateForMobComp = () => {
     const width = window.innerWidth;
-    if (width < 414) this.setState({ mobCompisVisible: true });
+    if (width < 415) this.setState({ mobCompisVisible: true });
     else this.setState({ mobCompisVisible: false });
   };
 

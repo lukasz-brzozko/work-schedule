@@ -1,6 +1,6 @@
 @mixin box-style {
     width: 252px;
-    margin: 30px auto;
+    margin: 0 auto;
     border-radius: 10px;
     border-style: none;
     background-color: rgba(255, 255, 255, 0.85);
@@ -8,7 +8,7 @@
 }
 
 @mixin title-txt {
-    font-size: 2.4rem;
+    font-size: $title-fz;
     color: #fff;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -23,6 +23,12 @@
 
 @mixin mq($width) {
     @media only screen and (min-width: $width) {
-        @content
+        @content;
+    }
+}
+
+@mixin mq-hor-w($width) {
+    @media (orientation: landscape and (min-width: $width)) {
+        @content;
     }
 }

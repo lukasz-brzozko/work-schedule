@@ -30,6 +30,10 @@ body {
             @include title-txt;
             background-color: $btn-bgc;
             padding: 15px 0;
+
+            @include mq($medium-w) {
+                font-size: $higher-title-fz;
+            }
         }
     }
 
@@ -41,6 +45,11 @@ body {
             top: auto;
             left: auto;
             transform: none;
+            margin: 8vh auto;
+        }
+
+        @include mq-hor-w ($desktop-w) {
+            margin: 30px auto;
         }
     }
 
@@ -51,7 +60,11 @@ body {
         line-height: $btn-h;
         width: 100%;
         background-color: $btn-bgc;
-        margin-bottom: 100px;
+        margin-bottom: 10vh;
+
+        @include mq($medium-w) {
+            font-size: $higher-title-fz;
+        }
     }
 }
 
@@ -62,6 +75,20 @@ body {
     justify-content: center;
     width: 90%;
     margin: 0 auto;
+
+    @include mq($small-w) {
+        height: auto;
+    }
+
+    @include mq($desktop-w) {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    @include mq-hor-w ($desktop-w) {
+        height: auto;
+        min-height: 100vh;
+    }
 }
 
 .container {
@@ -79,7 +106,7 @@ body {
         transform: translate(-50%, -50%);
         width: 90%;
         font-weight: bold;
-        font-size: 3.2rem;
+        font-size: $result-fz;
         text-transform: uppercase;
         text-align: center;
 
