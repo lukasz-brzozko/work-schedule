@@ -7,8 +7,9 @@ let { nextDay } = GlobalVars;
 
 const DayInfo = props => {
   if (props.date) {
+    const milisecondsValue = props.daysLater * 86400000; // 86400000 ms = 24h
     const stateDatePlusMiliseconds =
-      new Date(props.date).getTime() + parseInt(props.miliseconds);
+      new Date(props.date).getTime() + parseInt(milisecondsValue);
     const date = new Date(stateDatePlusMiliseconds);
     const weekdays = ["nie.", "pon.", "wto.", "śr.", "czw.", "pt.", "sob."];
     const weekday = weekdays[date.getDay()];

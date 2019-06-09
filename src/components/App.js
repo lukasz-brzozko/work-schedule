@@ -39,12 +39,14 @@ class App extends React.Component {
     });
   };
 
+  //Changes the ID format to US 3-digit (e.g. 5 will be 005)
   formatID = number =>
     number.toLocaleString("en-US", {
       minimumIntegerDigits: 3,
       useGrouping: false
     });
 
+  //Responsible for showing/hiding Arrows Component
   checkStateForMobComp = () => {
     const width = window.innerWidth;
     if (width < 415) this.setState({ mobCompisVisible: true });
@@ -86,8 +88,8 @@ class App extends React.Component {
         }
       })
       .then(res => {
-        const keyName = Object.keys(res);
-        const result = [res[keyName[0]].work];
+        const keyName = Object.keys(res); //extracting property name from object
+        const result = [res[keyName[0]].work]; //add to Array for creating universal looping
         let objectID = res[keyName[0]].id;
         objectID = parseInt(objectID);
         const startData = this.formatID(objectID + 1);
@@ -169,25 +171,22 @@ class App extends React.Component {
         <section id="next-days" className="next-days-section">
           <DayInfo
             date={this.state.inputValue}
-            miliseconds="86400000"
+            daysLater={1}
             answer={this.state.oneDayLaterResultContent}
             loaderVisibility={this.state.nxtDaysloaderVisible}
           />
-          {/* 1 day later*/}
           <DayInfo
             date={this.state.inputValue}
-            miliseconds="172800000"
+            daysLater={2}
             answer={this.state.twoDaysLaterResultContent}
             loaderVisibility={this.state.nxtDaysloaderVisible}
           />
-          {/* 2 days later*/}
           <DayInfo
             date={this.state.inputValue}
-            miliseconds="259200000"
+            daysLater={3}
             answer={this.state.threeDaysLaterResultContent}
             loaderVisibility={this.state.nxtDaysloaderVisible}
           />
-          {/* 3 days later*/}
         </section>
       </React.Fragment>
     );
