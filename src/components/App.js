@@ -1,5 +1,4 @@
 import React from "react";
-import "./css/App.css";
 import Input from "./Input";
 import Loader from "./Loader";
 import DayInfo from "./DayInfo";

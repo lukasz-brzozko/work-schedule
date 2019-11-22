@@ -1,5 +1,4 @@
 import React from "react";
-import "./css/Arrows.css";
 import { arrowType } from "./GlobalVars";
 
 const Arrows = props => (

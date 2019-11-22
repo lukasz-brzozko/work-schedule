@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #334e6c;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+@import "./_variables.scss";
+@import "./_mixins.scss";
+@import "./_Loader.scss";
+@import "./_Input.scss";
+@import "./_DayInfo.scss";
+@import "./_Arrows.scss";
+@import "./_App.scss";

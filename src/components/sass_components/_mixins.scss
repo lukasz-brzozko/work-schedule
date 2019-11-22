@@ -1,34 +1,34 @@
 @mixin box-style {
-    width: 252px;
-    margin: 0 auto;
-    border-radius: 10px;
-    border-style: none;
-    background-color: rgba(255, 255, 255, 0.85);
-    text-align: center;
+  width: 252px;
+  margin: 0 auto;
+  border-radius: 10px;
+  border-style: none;
+  background-color: rgba(255, 255, 255, 0.85);
+  text-align: center;
 }
 
 @mixin title-txt {
-    font-size: $title-fz;
-    color: #fff;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+  font-size: $title-fz;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 @mixin pos-abs-cen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @mixin mq($width) {
-    @media only screen and (min-width: $width) {
-        @content;
-    }
+  @media only screen and (min-width: $width) {
+    @content;
+  }
 }
 
 @mixin mq-hor-w($width) {
-    @media (orientation: landscape and (min-width: $width)) {
-        @content;
-    }
+  @media (orientation: landscape and (min-width: $width)) {
+    @content;
+  }
 }
