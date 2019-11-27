@@ -1,125 +1,125 @@
 // RESET
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
-@import '_variables.scss';
-@import '_mixins.scss';
+@import "_variables.scss";
+@import "_mixins.scss";
 
 html {
-    font-size: $html-fz;
+  font-size: $html-fz;
 }
 
 body {
-    font-family: $web-font;
+  font-family: $web-font;
 }
 
 .now-section {
-    height: 100vh;
-    text-align: center;
+  height: 100vh;
+  text-align: center;
+
+  @include mq($small-w) {
+    height: auto;
+  }
+
+  .title-header {
+    width: 100%;
+
+    .title {
+      @include title-txt;
+      background-color: $btn-bgc;
+      padding: 15px 0;
+
+      @include mq($medium-w) {
+        font-size: $higher-title-fz;
+      }
+    }
+  }
+
+  .center {
+    @include pos-abs-cen;
 
     @include mq($small-w) {
-        height: auto;
+      position: static;
+      top: auto;
+      left: auto;
+      transform: none;
+      margin: 8vh auto;
     }
+  }
 
-    .title-header {
-        width: 100%;
+  .show-more {
+    @include title-txt;
+    font-weight: bold;
+    height: $btn-h;
+    line-height: $btn-h;
+    width: 100%;
+    background-color: $btn-bgc;
+    margin-bottom: 10vh;
 
-        .title {
-            @include title-txt;
-            background-color: $btn-bgc;
-            padding: 15px 0;
-
-            @include mq($medium-w) {
-                font-size: $higher-title-fz;
-            }
-        }
+    @include mq($medium-w) {
+      font-size: $higher-title-fz;
     }
-
-    .center {
-        @include pos-abs-cen;
-
-        @include mq($small-w) {
-            position: static;
-            top: auto;
-            left: auto;
-            transform: none;
-            margin: 8vh auto;
-        }
-    }
-
-    .show-more {
-        @include title-txt;
-        font-weight: bold;
-        height: $btn-h;
-        line-height: $btn-h;
-        width: 100%;
-        background-color: $btn-bgc;
-        margin-bottom: 10vh;
-
-        @include mq($medium-w) {
-            font-size: $higher-title-fz;
-        }
-    }
+  }
 }
 
 .next-days-section {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 90%;
-    margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
 
-    @include mq($small-w) {
-        height: auto;
-    }
+  @include mq($small-w) {
+    height: auto;
+  }
 
-    @include mq($desktop-w) {
-        flex-direction: row;
-        justify-content: space-around;
-    }
+  @include mq($desktop-w) {
+    flex-direction: row;
+    justify-content: space-around;
+  }
 
-    @include mq-hor-w ($desktop-w) {
-        height: auto;
-        min-height: 100vh;
-    }
+  @include mq-hor-w($desktop-w) {
+    height: auto;
+    min-height: 100vh;
+  }
 }
 
 .container {
-    position: relative;
-    @include box-style;
+  position: relative;
+  @include box-style;
 
-    &.main {
-        height: 150px;
+  &.main {
+    height: 150px;
+  }
+
+  .result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    font-weight: bold;
+    font-size: $result-fz;
+    text-transform: uppercase;
+    text-align: center;
+
+    &.day {
+      color: #e67e22;
     }
 
-    .result {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 90%;
-        font-weight: bold;
-        font-size: $result-fz;
-        text-transform: uppercase;
-        text-align: center;
-
-        &.day {
-            color: #e67e22;
-        }
-
-        &.night {
-            color: #2980b9;
-        }
-
-        &.day-off {
-            color: #169d50;
-        }
-
-        &.no-data {
-            color: #c0392b;
-        }
+    &.night {
+      color: #2980b9;
     }
+
+    &.day-off {
+      color: #169d50;
+    }
+
+    &.no-data {
+      color: #c0392b;
+    }
+  }
 }

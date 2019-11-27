@@ -7,6 +7,7 @@ const Input = props => (
     value={props.value}
     onChange={props.change}
     placeholder="Wybierz datę"
+    required
   />
 );
 

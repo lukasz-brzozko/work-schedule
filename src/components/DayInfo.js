@@ -1,39 +1,20 @@
 import React from "react";
 import Loader from "./Loader";
-import GlobalVars from "./GlobalVars";
-
-let { nextDay } = GlobalVars;
 
 const DayInfo = props => {
-  if (props.date) {
-    const milisecondsValue = props.daysLater * 86400000; // 86400000 ms = 24h
-    const stateDatePlusMiliseconds =
-      new Date(props.date).getTime() + parseInt(milisecondsValue);
-    const date = new Date(stateDatePlusMiliseconds);
-    const weekdays = ["nie.", "pon.", "wto.", "śr.", "czw.", "pt.", "sob."];
-    const weekday = weekdays[date.getDay()];
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    nextDay = `${weekday}, ${day < 10 ? "0" + day : day}.${
-      month < 10 ? "0" + month : month
-    }.${year}`;
-    if (nextDay.length === 9) {
-      nextDay = "0" + nextDay;
-    }
-  } else {
-    nextDay = "Data";
-  }
-
-  const labelStyle = !props.date ? { visibility: "hidden" } : {};
   return (
     <div className="flex-wrapper">
-      <p className="label" style={labelStyle}>
-        {nextDay}
+      <p className="label">
+        {props.date !== "Invalid date" ? props.date : "Niepoprawna data"}
       </p>
       <div className="container next">
-        {props.loaderVisibility ? <Loader /> : null}
-        <span className="result">{props.answer}</span>
+        {props.loaderVisibility && <Loader />}
+        <span
+          className={`result${props.children &&
+            props.setTxtColor(props.children)}`}
+        >
+          {props.children}
+        </span>
       </div>
     </div>
   );
