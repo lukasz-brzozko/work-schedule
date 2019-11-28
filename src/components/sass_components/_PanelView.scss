@@ -1,6 +1,6 @@
 .panel-view {
   &__form {
-    height: 100vh;
+    min-height: 100vh;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -10,6 +10,12 @@
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
+    @media (orientation: landscape) {
+      position: static;
+      top: auto;
+      left: auto;
+      transform: none;
+    }
     &--blurred {
       filter: blur(2px);
     }
@@ -22,12 +28,15 @@
     min-height: 33vh;
   }
   &__input {
+    font-family: "Roboto", sans-serif;
     &--text {
       box-sizing: border-box;
-      height: 80px;
+      height: 70px;
       width: 90%;
+      max-width: 350px;
+      margin: 30px 0;
       padding: 10px;
-      font-size: 2.6rem;
+      font-size: 2.5rem;
       border-radius: 10px;
       text-align: center;
       border: none;
@@ -41,24 +50,39 @@
     }
   }
   &__button {
+    font-family: "Roboto", sans-serif;
     display: block;
     box-sizing: border-box;
     height: 50px;
     width: 50%;
+    max-width: 200px;
+    margin: 30px 0;
     padding: 10px;
     font-size: 2rem;
     border-radius: 10px;
     border: none;
-    background-color: rgb(255, 225, 57);
+    background-color: lighten(#f4b400, 10%);
+    cursor: pointer;
   }
-  &__mode-selection {
-    display: block;
-    box-sizing: border-box;
-    height: 70px;
-    width: 50%;
-    padding: 10px;
-    font-size: 2rem;
-    border-radius: 10px;
-    border: 2px solid #333;
+  &__mode {
+    &-selection {
+      display: block;
+      box-sizing: border-box;
+      height: 70px;
+      width: 50%;
+      max-width: 300px;
+      margin: 30px 0;
+      padding: 10px;
+      font-size: 2rem;
+      border-radius: 10px;
+      border: none;
+      background-color: #fff;
+      cursor: pointer;
+      // -webkit-appearance: none;
+      // -webkit-border-radius: 0px;
+    }
+    &-option {
+      border-radius: 10px;
+    }
   }
 }

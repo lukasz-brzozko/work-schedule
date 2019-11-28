@@ -5,6 +5,11 @@ import ConfirmationWidget from "./ConfirmationWidget";
 import moment from "moment";
 
 class PanelView extends React.Component {
+  constructor() {
+    super();
+    this.getUnsubscribeRef = null;
+    this.user = null;
+  }
   state = {
     txtInputValue: "",
     firstDay: "",
@@ -21,10 +26,8 @@ class PanelView extends React.Component {
     const auth = getAuth();
     const ref = auth.onAuthStateChanged(user => {
       if (user) {
-        const isAnonymous = user.isAnonymous;
         this.setState({
-          logged: true,
-          isAnonymous
+          logged: true
         });
       } else {
         this.props.history.push("/login");
@@ -114,80 +117,96 @@ class PanelView extends React.Component {
     }
   };
 
-  componentDidMount() {}
+  signUserOut = () => {
+    const auth = getAuth();
+    auth.signOut();
+    this.props.history.goBack();
+  };
 
-  componentWillUnmount() {}
+  componentDidMount() {
+    this.getUnsubscribeRef = this.addAuthListening();
+  }
+
+  componentWillUnmount() {
+    this.getUnsubscribeRef();
+  }
 
   render() {
     return (
       <>
-        <section className="panel-view">
-          <form
-            className={`panel-view__form${
-              this.state.isConfirmationVisible
-                ? " panel-view__form--blurred"
-                : ""
-            }`}
-          >
-            <select
-              className="panel-view__mode-selection"
-              onChange={this.handleModeSelectionChange}
-              defaultValue="day"
-            >
-              <option className="panel-view__mode-option" value="day">
-                Dzień
-              </option>
-              <option className="panel-view__mode-option" value="range">
-                Zakres dni
-              </option>
-            </select>
-            <div className="panel-view__date-container">
-              <Input
-                name="first-day"
-                value={this.state.firstDay}
-                change={e => this.handleDateInputChange(e, 1)}
-              />
-              {this.state.mode === "range" && (
-                <Input
-                  name="second-day"
-                  value={this.state.secondDay}
-                  change={e => this.handleDateInputChange(e, 2)}
-                />
-              )}
-            </div>
-
-            <input
-              type="text"
-              placeholder="Wiadomość"
-              className={`panel-view__input panel-view__input--text${
-                this.state.sendingSuccess
-                  ? " panel-view__input--text-success"
+        {this.state.logged && (
+          <section className="panel-view">
+            <form
+              className={`panel-view__form${
+                this.state.isConfirmationVisible
+                  ? " panel-view__form--blurred"
                   : ""
-              }${
-                this.state.sendingFailed ? " panel-view__input--text-fail" : ""
               }`}
-              maxLength={20}
-              minLength={3}
-              value={this.state.txtInputValue}
-              onChange={this.handleTxtInputChange}
-              required
-            />
-            <button
-              className="panel-view__button"
-              onClick={this.showConfirmation}
             >
-              Wyślij
-            </button>
-          </form>
-          {this.state.isConfirmationVisible && (
-            <ConfirmationWidget
-              yesBtn={this.sendToDatabase}
-              noBtn={this.hideConfirmationWidget}
-            >
-              Czy na pewno wysłać?
-            </ConfirmationWidget>
-          )}
-        </section>
+              <select
+                className="panel-view__mode-selection"
+                onChange={this.handleModeSelectionChange}
+                defaultValue="day"
+              >
+                <option className="panel-view__mode-option" value="day">
+                  Dzień
+                </option>
+                <option className="panel-view__mode-option" value="range">
+                  Zakres dni
+                </option>
+              </select>
+              <div className="panel-view__date-container">
+                <Input
+                  modifier="--smaller"
+                  name="first-day"
+                  value={this.state.firstDay}
+                  change={e => this.handleDateInputChange(e, 1)}
+                />
+                {this.state.mode === "range" && (
+                  <Input
+                    modifier="--smaller"
+                    name="second-day"
+                    value={this.state.secondDay}
+                    change={e => this.handleDateInputChange(e, 2)}
+                  />
+                )}
+              </div>
+
+              <input
+                type="text"
+                placeholder="Dodaj opis"
+                className={`panel-view__input panel-view__input--text${
+                  this.state.sendingSuccess
+                    ? " panel-view__input--text-success"
+                    : ""
+                }${
+                  this.state.sendingFailed
+                    ? " panel-view__input--text-fail"
+                    : ""
+                }`}
+                maxLength={20}
+                minLength={3}
+                value={this.state.txtInputValue}
+                onChange={this.handleTxtInputChange}
+                required
+              />
+              <button
+                className="panel-view__button"
+                onClick={this.showConfirmation}
+              >
+                Wyślij
+              </button>
+            </form>
+            {this.state.isConfirmationVisible && (
+              <ConfirmationWidget
+                yesBtn={this.sendToDatabase}
+                noBtn={this.hideConfirmationWidget}
+              >
+                Czy na pewno wysłać?
+              </ConfirmationWidget>
+            )}
+          </section>
+        )}
       </>
     );
   }
