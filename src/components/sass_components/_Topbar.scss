@@ -1,0 +1,43 @@
+.topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 40px;
+  height: 5vh;
+  max-height: 60px;
+  // margin-bottom: 20px;
+  background-color: #333;
+  color: #fff;
+  font-size: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  z-index: 1;
+  &__menu {
+    width: 50%;
+    max-width: 300px;
+    height: 100%;
+    margin-left: auto;
+    &-list {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 100%;
+      list-style: none;
+    }
+    &-item {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      &-link {
+        display: block;
+        height: 30px;
+        width: 30px;
+        padding: 10px;
+      }
+    }
+    &-logo {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

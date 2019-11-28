@@ -1,5 +1,6 @@
 import React from "react";
 import * as firebase from "firebase/app";
+import Topbar from "./Topbar";
 import { getAuth, getDatabase } from "../common/firebase";
 import firebaseui from "firebaseui/dist/npm__pl";
 class LoginView extends React.Component {
@@ -62,6 +63,7 @@ class LoginView extends React.Component {
   render() {
     return (
       <>
+        <Topbar />
         <div
           id="firebaseui-auth-container"
           className="firebaseui-auth-container"

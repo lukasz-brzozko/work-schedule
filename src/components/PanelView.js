@@ -1,6 +1,7 @@
 import React from "react";
 import { getAuth, getDatabase } from "../common/firebase";
 import Input from "./Input";
+import Topbar from "./Topbar";
 import ConfirmationWidget from "./ConfirmationWidget";
 import moment from "moment";
 
@@ -44,10 +45,17 @@ class PanelView extends React.Component {
   handleModeSelectionChange = e => {
     this.setState({ mode: e.target.value });
   };
+
+  hideSendingSuccess = e => {
+    this.setState({
+      sendingSuccess: false,
+      txtInputValue: ""
+    });
+  };
+
   handleTxtInputChange = e => {
     this.setState({
       txtInputValue: e.target.value,
-      sendingSuccess: false,
       sendingFailed: false
     });
   };
@@ -71,7 +79,8 @@ class PanelView extends React.Component {
   hideConfirmationWidget = () => {
     this.setState({ isConfirmationVisible: false });
   };
-  sendToDatabase = async (e, mode = "day") => {
+  sendToDatabase = async e => {
+    const { mode } = this.state;
     this.hideConfirmationWidget();
     const txtInputValue = this.state.txtInputValue.toUpperCase();
     const { firstDay, secondDay } = this.state;
@@ -84,7 +93,12 @@ class PanelView extends React.Component {
           },
           err => {
             if (!err) {
-              return this.setState({ txtInputValue: "", sendingSuccess: true });
+              this.setState({
+                txtInputValue: "Sukces \u2713",
+                sendingSuccess: true
+              });
+              setTimeout(this.hideSendingSuccess, 2000);
+              return;
             }
             return this.setState({ sendingFailed: true });
           }
@@ -109,8 +123,15 @@ class PanelView extends React.Component {
           }
           db.ref("workdays2").update(payload, err => {
             if (!err) {
-              this.setState({ txtInputValue: "" });
-            } // dodać handler dla błędu
+              this.setState({
+                txtInputValue: "Sukces \u2713",
+                sendingSuccess: true
+              });
+              setTimeout(this.hideSendingSuccess, 2000);
+              return;
+            }
+            return this.setState({ sendingFailed: true });
+            // dodać handler dla błędu
           });
         }
       }
@@ -135,77 +156,80 @@ class PanelView extends React.Component {
     return (
       <>
         {this.state.logged && (
-          <section className="panel-view">
-            <form
-              className={`panel-view__form${
-                this.state.isConfirmationVisible
-                  ? " panel-view__form--blurred"
-                  : ""
-              }`}
-            >
-              <select
-                className="panel-view__mode-selection"
-                onChange={this.handleModeSelectionChange}
-                defaultValue="day"
-              >
-                <option className="panel-view__mode-option" value="day">
-                  Dzień
-                </option>
-                <option className="panel-view__mode-option" value="range">
-                  Zakres dni
-                </option>
-              </select>
-              <div className="panel-view__date-container">
-                <Input
-                  modifier="--smaller"
-                  name="first-day"
-                  value={this.state.firstDay}
-                  change={e => this.handleDateInputChange(e, 1)}
-                />
-                {this.state.mode === "range" && (
-                  <Input
-                    modifier="--smaller"
-                    name="second-day"
-                    value={this.state.secondDay}
-                    change={e => this.handleDateInputChange(e, 2)}
-                  />
-                )}
-              </div>
-
-              <input
-                type="text"
-                placeholder="Dodaj opis"
-                className={`panel-view__input panel-view__input--text${
-                  this.state.sendingSuccess
-                    ? " panel-view__input--text-success"
-                    : ""
-                }${
-                  this.state.sendingFailed
-                    ? " panel-view__input--text-fail"
+          <>
+            <Topbar />
+            <section className="panel-view">
+              <form
+                className={`panel-view__form${
+                  this.state.isConfirmationVisible
+                    ? " panel-view__form--blurred"
                     : ""
                 }`}
-                maxLength={20}
-                minLength={3}
-                value={this.state.txtInputValue}
-                onChange={this.handleTxtInputChange}
-                required
-              />
-              <button
-                className="panel-view__button"
-                onClick={this.showConfirmation}
               >
-                Wyślij
-              </button>
-            </form>
-            {this.state.isConfirmationVisible && (
-              <ConfirmationWidget
-                yesBtn={this.sendToDatabase}
-                noBtn={this.hideConfirmationWidget}
-              >
-                Czy na pewno wysłać?
-              </ConfirmationWidget>
-            )}
-          </section>
+                <select
+                  className="panel-view__mode-selection"
+                  onChange={this.handleModeSelectionChange}
+                  defaultValue="day"
+                >
+                  <option className="panel-view__mode-option" value="day">
+                    Dzień
+                  </option>
+                  <option className="panel-view__mode-option" value="range">
+                    Zakres dni
+                  </option>
+                </select>
+                <div className="panel-view__date-container">
+                  <Input
+                    modifier="--smaller"
+                    name="first-day"
+                    value={this.state.firstDay}
+                    change={e => this.handleDateInputChange(e, 1)}
+                  />
+                  {this.state.mode === "range" && (
+                    <Input
+                      modifier="--smaller"
+                      name="second-day"
+                      value={this.state.secondDay}
+                      change={e => this.handleDateInputChange(e, 2)}
+                    />
+                  )}
+                </div>
+
+                <input
+                  type="text"
+                  placeholder="Dodaj opis"
+                  className={`panel-view__input panel-view__input--text${
+                    this.state.sendingSuccess
+                      ? " panel-view__input--text-success"
+                      : ""
+                  }${
+                    this.state.sendingFailed
+                      ? " panel-view__input--text-fail"
+                      : ""
+                  }`}
+                  maxLength={20}
+                  minLength={3}
+                  value={this.state.txtInputValue}
+                  onChange={this.handleTxtInputChange}
+                  required
+                />
+                <button
+                  className="panel-view__button"
+                  onClick={this.showConfirmation}
+                >
+                  Wyślij
+                </button>
+              </form>
+              {this.state.isConfirmationVisible && (
+                <ConfirmationWidget
+                  yesBtn={this.sendToDatabase}
+                  noBtn={this.hideConfirmationWidget}
+                >
+                  Czy na pewno wysłać?
+                </ConfirmationWidget>
+              )}
+            </section>
+          </>
         )}
       </>
     );

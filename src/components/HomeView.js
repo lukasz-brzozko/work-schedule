@@ -3,6 +3,7 @@ import Input from "./Input";
 import Loader from "./Loader";
 import DayInfo from "./DayInfo";
 import Arrows from "./Arrows";
+import Topbar from "./Topbar";
 import { today, fetchErrTxt } from "./GlobalVars";
 import { getDatabase, getAuth } from "../common/firebase";
 import moment from "moment";
@@ -119,15 +120,16 @@ class HomeView extends React.Component {
     window.addEventListener("resize", this.checkStateForMobComp);
   }
   componentWillUnmount() {
-    window.removEventListener("resize", this.checkStateForMobComp);
+    window.removeEventListener("resize", this.checkStateForMobComp);
   }
   render() {
     return (
       <React.Fragment>
+        <Topbar />
         <section id="now" className="now-section">
-          <header className="title-header">
+          {/* <header className="title-header">
             <h1 className="title">Wybierz dzień</h1>
-          </header>
+          </header> */}
           <div className="center">
             <Input
               value={this.state.inputValue}
