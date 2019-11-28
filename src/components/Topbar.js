@@ -62,12 +62,13 @@ class Topbar extends React.Component {
             </li>
             {this.state.userIsLogged && (
               <li className="topbar__menu-item">
-                <a
-                  className="topbar__menu-item-link"
+                <button
+                  href="#"
+                  className="topbar__menu-item-link topbar__menu-item-link--sign-out"
                   onClick={this.signUserOut}
                 >
                   <LogoutLogo />
-                </a>
+                </button>
               </li>
             )}
           </ul>

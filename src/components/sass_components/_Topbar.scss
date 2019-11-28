@@ -33,6 +33,11 @@
         height: 30px;
         width: 30px;
         padding: 10px;
+        &--sign-out {
+          border: none;
+          background-color: transparent;
+          box-sizing: content-box;
+        }
       }
     }
     &-logo {
