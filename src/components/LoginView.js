@@ -1,7 +1,7 @@
 import React from "react";
 import * as firebase from "firebase/app";
 import Topbar from "./Topbar";
-import { getAuth, getDatabase } from "../common/firebase";
+import { getAuth } from "../common/firebase";
 import firebaseui from "firebaseui/dist/npm__pl";
 class LoginView extends React.Component {
   constructor() {
@@ -10,7 +10,6 @@ class LoginView extends React.Component {
   }
   state = {
     loading: true
-    // logged: false
   };
 
   generateFirebaseUI = () => {
@@ -32,10 +31,7 @@ class LoginView extends React.Component {
       },
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
 
-      signInOptions: [
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
-        // firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
-      ]
+      signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
     };
     ui.start("#firebaseui-auth-container", uiConfig);
   };
@@ -68,7 +64,6 @@ class LoginView extends React.Component {
           id="firebaseui-auth-container"
           className="firebaseui-auth-container"
         ></div>
-        {/* <div id="loader">Loading...</div> */}
       </>
     );
   }

@@ -10,6 +10,7 @@ class PanelView extends React.Component {
     super();
     this.getUnsubscribeRef = null;
     this.user = null;
+    this.confirmationTxt = "";
   }
   state = {
     txtInputValue: "",
@@ -20,7 +21,8 @@ class PanelView extends React.Component {
     mode: "day",
     sendingSuccess: false,
     sendingFailed: false,
-    isConfirmationVisible: false
+    isConfirmationVisible: false,
+    dbResetActive: false
   };
 
   addAuthListening = () => {
@@ -65,19 +67,48 @@ class PanelView extends React.Component {
     }
     this.setState({ secondDay: e.target.value });
   };
-  showConfirmation = e => {
+  showConfirmation = (e, mode) => {
     e.preventDefault();
-    if (this.state.firstDay && this.state.txtInputValue) {
-      if (
-        (this.state.mode === "range" && this.state.secondDay) ||
-        this.state.mode === "day"
-      ) {
-        this.setState({ isConfirmationVisible: true });
+    if (mode === "send") {
+      if (this.state.firstDay && this.state.txtInputValue) {
+        if (
+          this.state.mode === "day" ||
+          (this.state.mode === "range" &&
+            this.state.secondDay &&
+            this.state.secondDay > this.state.firstDay)
+        ) {
+          this.confirmationTxt = "Czy na pewno wysłać?";
+          this.setState({
+            isConfirmationVisible: true,
+            dbResetActive: false
+          });
+        }
       }
+    } else {
+      this.confirmationTxt =
+        "Czy na pewno chcesz zrestować bazę danych od dnia dzisiejszego?";
+      this.setState({
+        isConfirmationVisible: true,
+        dbResetActive: true
+      });
     }
   };
   hideConfirmationWidget = () => {
     this.setState({ isConfirmationVisible: false });
+  };
+  updateDatabase = async (path = "workdays2", payload) => {
+    const db = await getDatabase();
+    db.ref(path).update(payload, err => {
+      if (!err) {
+        this.setState({
+          txtInputValue: "Sukces \u2713",
+          sendingSuccess: true
+        });
+        setTimeout(this.hideSendingSuccess, 2000);
+        return;
+      }
+      return this.setState({ sendingFailed: true });
+    });
   };
   sendToDatabase = async e => {
     const { mode } = this.state;
@@ -85,24 +116,11 @@ class PanelView extends React.Component {
     const txtInputValue = this.state.txtInputValue.toUpperCase();
     const { firstDay, secondDay } = this.state;
     if (txtInputValue && firstDay) {
-      const db = await getDatabase();
       if (mode === "day") {
-        db.ref("workdays2").update(
-          {
-            [firstDay]: txtInputValue
-          },
-          err => {
-            if (!err) {
-              this.setState({
-                txtInputValue: "Sukces \u2713",
-                sendingSuccess: true
-              });
-              setTimeout(this.hideSendingSuccess, 2000);
-              return;
-            }
-            return this.setState({ sendingFailed: true });
-          }
-        );
+        const payload = {
+          [firstDay]: txtInputValue
+        };
+        this.updateDatabase("workdays2", payload);
       } else {
         if (secondDay && secondDay > firstDay) {
           const firstDayDateObj = moment(firstDay, moment.ISO_8601);
@@ -121,23 +139,20 @@ class PanelView extends React.Component {
             }`;
             payload[dateInFormat] = txtInputValue;
           }
-          db.ref("workdays2").update(payload, err => {
-            if (!err) {
-              this.setState({
-                txtInputValue: "Sukces \u2713",
-                sendingSuccess: true
-              });
-              setTimeout(this.hideSendingSuccess, 2000);
-              return;
-            }
-            return this.setState({ sendingFailed: true });
-            // dodać handler dla błędu
-          });
+          this.updateDatabase("workdays2", payload);
         }
       }
     }
   };
-
+  resetDB = async () => {
+    this.hideConfirmationWidget();
+    const db = await getDatabase();
+    let data = null;
+    await db.ref("/workdays-copy").once("value", snap => {
+      data = snap.val();
+    });
+    this.updateDatabase("workdays2", data);
+  };
   signUserOut = () => {
     const auth = getAuth();
     auth.signOut();
@@ -157,7 +172,10 @@ class PanelView extends React.Component {
       <>
         {this.state.logged && (
           <>
-            <Topbar />
+            <Topbar
+              modifier={this.state.isConfirmationVisible ? "--blurred" : ""}
+            />
+
             <section className="panel-view">
               <form
                 className={`panel-view__form${
@@ -214,18 +232,32 @@ class PanelView extends React.Component {
                   required
                 />
                 <button
-                  className="panel-view__button"
-                  onClick={this.showConfirmation}
+                  className="panel-view__button panel-view__button--send"
+                  onClick={e => {
+                    this.showConfirmation(e, "send");
+                  }}
                 >
                   Wyślij
+                </button>
+                <button
+                  className="panel-view__button panel-view__button--reset"
+                  onClick={e => {
+                    this.showConfirmation(e, "reset");
+                  }}
+                >
+                  Resetuj bazę
                 </button>
               </form>
               {this.state.isConfirmationVisible && (
                 <ConfirmationWidget
-                  yesBtn={this.sendToDatabase}
+                  yesBtn={
+                    this.state.dbResetActive
+                      ? this.resetDB
+                      : this.sendToDatabase
+                  }
                   noBtn={this.hideConfirmationWidget}
                 >
-                  Czy na pewno wysłać?
+                  {this.confirmationTxt}
                 </ConfirmationWidget>
               )}
             </section>

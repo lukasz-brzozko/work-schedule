@@ -13,6 +13,9 @@
   background-color: rgba(0, 0, 0, 0.4);
   overflow: hidden;
   z-index: 1;
+  &--blurred {
+    filter: blur(2px);
+  }
   &__menu {
     width: 50%;
     max-width: 300px;
@@ -26,7 +29,6 @@
       list-style: none;
     }
     &-item {
-      cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       &-link {
         display: block;
@@ -37,6 +39,7 @@
           border: none;
           background-color: transparent;
           box-sizing: content-box;
+          cursor: pointer;
         }
       }
     }

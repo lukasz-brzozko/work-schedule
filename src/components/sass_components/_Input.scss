@@ -33,6 +33,9 @@
         transform: translate(-50%, -50%);
         color: #757575;
         font-size: 2rem;
+        @include mq($medium-w) {
+          content: none;
+        }
       }
     }
   }

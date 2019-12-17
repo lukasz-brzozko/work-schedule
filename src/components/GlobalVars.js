@@ -7,7 +7,6 @@ export const today = `${year}-${month < 10 ? "0" + month : month}-${
   day < 10 ? "0" + day : day
 }`;
 let nextDay;
-export const fetchErrTxt = "Brak danych";
 
 const GlobalVars = {
   date,

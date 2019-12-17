@@ -4,8 +4,8 @@ import Loader from "./Loader";
 import DayInfo from "./DayInfo";
 import Arrows from "./Arrows";
 import Topbar from "./Topbar";
-import { today, fetchErrTxt } from "./GlobalVars";
-import { getDatabase, getAuth } from "../common/firebase";
+import { today } from "./GlobalVars";
+import { getDatabase } from "../common/firebase";
 import moment from "moment";
 import "moment/locale/pl";
 class HomeView extends React.Component {
@@ -78,31 +78,30 @@ class HomeView extends React.Component {
       this.setNoData();
       return;
     }
-    const endDate = moment(startDate)
-      .add(3, "days")
-      .format("YYYY-MM-DD");
+    const nextDates = [];
+    for (let i = 1; i < 4; i++) {
+      const date = moment(startDate)
+        .add(i, "days")
+        .format("YYYY-MM-DD");
+      nextDates.push(date);
+    }
+
     const db = await getDatabase();
     db.ref(`/workdays2`)
       .orderByKey()
       .startAt(startDate)
-      .endAt(endDate)
+      .endAt(nextDates[nextDates.length - 1])
       .once(
         "value",
         snap => {
           const data = snap.val();
           if (data) {
-            const keyNames = Object.keys(data);
-
             this.setState({
               isLoaderVisible: false,
-              todayResultContent:
-                keyNames.length > 0 ? data[keyNames[0]] : this.noDataTxt,
-              oneDayLaterResultContent:
-                keyNames.length > 1 ? data[keyNames[1]] : this.noDataTxt,
-              twoDaysLaterResultContent:
-                keyNames.length > 2 ? data[keyNames[2]] : this.noDataTxt,
-              threeDaysLaterResultContent:
-                keyNames.length > 3 ? data[keyNames[3]] : this.noDataTxt
+              todayResultContent: data[startDate] || this.noDataTxt,
+              oneDayLaterResultContent: data[nextDates[0]] || this.noDataTxt,
+              twoDaysLaterResultContent: data[nextDates[1]] || this.noDataTxt,
+              threeDaysLaterResultContent: data[nextDates[2]] || this.noDataTxt
             });
           } else {
             this.setNoData();
@@ -127,9 +126,6 @@ class HomeView extends React.Component {
       <React.Fragment>
         <Topbar />
         <section id="now" className="now-section">
-          {/* <header className="title-header">
-            <h1 className="title">Wybierz dzień</h1>
-          </header> */}
           <div className="center">
             <Input
               value={this.state.inputValue}

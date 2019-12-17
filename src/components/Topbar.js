@@ -39,7 +39,11 @@ class Topbar extends React.Component {
 
   render() {
     return (
-      <div className="topbar">
+      <div
+        className={`topbar${
+          this.props.modifier ? " topbar" + this.props.modifier : ""
+        }`}
+      >
         <nav className="topbar__menu">
           <ul className="topbar__menu-list">
             <li className="topbar__menu-item">
