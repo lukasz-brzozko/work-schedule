@@ -107,7 +107,9 @@ class PanelView extends React.Component {
         setTimeout(this.hideSendingSuccess, 2000);
         return;
       }
-      return this.setState({ sendingFailed: true });
+      return this.setState({
+        sendingFailed: true
+      });
     });
   };
   sendToDatabase = async e => {
