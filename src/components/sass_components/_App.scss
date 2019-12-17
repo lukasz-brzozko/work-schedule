@@ -44,7 +44,11 @@ body {
       top: auto;
       left: auto;
       transform: none;
-      margin: 8vh auto;
+      margin: 60px auto 8vh;
+    }
+
+    @include mq($medium-w) {
+      margin-top: 12vh;
     }
   }
 
