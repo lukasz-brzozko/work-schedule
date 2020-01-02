@@ -2,8 +2,9 @@ import React from "react";
 import { ReactComponent as HomeLogo } from "../assets/home.svg";
 import { ReactComponent as LogoutLogo } from "../assets/logout.svg";
 import { ReactComponent as UserLogo } from "../assets/user.svg";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { getAuth } from "../common/firebase";
+import { withRouter } from "react-router-dom";
 
 class Topbar extends React.Component {
   constructor() {
@@ -29,6 +30,13 @@ class Topbar extends React.Component {
     const auth = getAuth();
     auth.signOut();
   };
+
+  checkIfLinkShouldBeDisabled = (event, linkPath) => {
+    const currentLocation = this.props.location.pathname;
+    if (currentLocation === linkPath) {
+      return event.preventDefault();
+    }
+  };
   componentDidMount() {
     this.getUnsubscribeRef = this.addAuthListening();
   }
@@ -47,22 +55,27 @@ class Topbar extends React.Component {
         <nav className="topbar__menu">
           <ul className="topbar__menu-list">
             <li className="topbar__menu-item">
-              <Link
-                to="/"
-                label="Strona główna"
+              <NavLink
+                exact
+                to={"/"}
                 className="topbar__menu-item-link"
+                activeClassName={"topbar__menu-item-link--active"}
+                label="Strona główna"
+                onClick={e => this.checkIfLinkShouldBeDisabled(e, "/")}
               >
                 <HomeLogo />
-              </Link>
+              </NavLink>
             </li>
             <li className="topbar__menu-item">
-              <Link
+              <NavLink
                 to="/panel"
-                label="Strona główna"
                 className="topbar__menu-item-link"
+                activeClassName={"topbar__menu-item-link--active"}
+                label="Panel administracyjny"
+                onClick={e => this.checkIfLinkShouldBeDisabled(e, "/panel")}
               >
                 <UserLogo />
-              </Link>
+              </NavLink>
             </li>
             {this.state.userIsLogged && (
               <li className="topbar__menu-item">
@@ -81,4 +94,4 @@ class Topbar extends React.Component {
     );
   }
 }
-export default Topbar;
+export default withRouter(Topbar);

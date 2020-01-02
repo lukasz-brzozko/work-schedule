@@ -3,7 +3,6 @@ import Input from "./Input";
 import Loader from "./Loader";
 import DayInfo from "./DayInfo";
 import Arrows from "./Arrows";
-import Topbar from "./Topbar";
 import { today } from "./GlobalVars";
 import { getDatabase } from "../common/firebase";
 import moment from "moment";
@@ -124,7 +123,7 @@ class HomeView extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Topbar />
+        {/* <Topbar /> */}
         <section id="now" className="now-section">
           <div className="center">
             <Input

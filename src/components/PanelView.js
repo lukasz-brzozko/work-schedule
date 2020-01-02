@@ -1,7 +1,6 @@
 import React from "react";
 import { getAuth, getDatabase } from "../common/firebase";
 import Input from "./Input";
-import Topbar from "./Topbar";
 import ConfirmationWidget from "./ConfirmationWidget";
 import moment from "moment";
 
@@ -11,6 +10,7 @@ class PanelView extends React.Component {
     this.getUnsubscribeRef = null;
     this.user = null;
     this.confirmationTxt = "";
+    this.topbar = null;
   }
   state = {
     txtInputValue: "",
@@ -33,7 +33,7 @@ class PanelView extends React.Component {
           logged: true
         });
       } else {
-        this.props.history.push("/login");
+        this.props.history.replace("/login");
       }
     });
     return ref;
@@ -160,9 +160,14 @@ class PanelView extends React.Component {
     auth.signOut();
     this.props.history.goBack();
   };
+  getTopbarElement = () => {
+    const topbar = document.querySelector(".topbar");
+    this.topbar = topbar;
+  };
 
   componentDidMount() {
     this.getUnsubscribeRef = this.addAuthListening();
+    this.getTopbarElement();
   }
 
   componentWillUnmount() {
@@ -170,14 +175,16 @@ class PanelView extends React.Component {
   }
 
   render() {
+    if (this.topbar) {
+      this.state.isConfirmationVisible
+        ? this.topbar.classList.add("topbar--blurred")
+        : this.topbar.classList.remove("topbar--blurred");
+    }
+
     return (
       <>
         {this.state.logged && (
           <>
-            <Topbar
-              modifier={this.state.isConfirmationVisible ? "--blurred" : ""}
-            />
-
             <section className="panel-view">
               <form
                 className={`panel-view__form${

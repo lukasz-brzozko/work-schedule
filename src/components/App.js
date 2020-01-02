@@ -1,4 +1,5 @@
 import React from "react";
+import Topbar from "./Topbar";
 import HomeView from "./HomeView";
 import LoginView from "./LoginView";
 import PanelView from "./PanelView";
@@ -12,14 +13,17 @@ import {
 
 const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={HomeView} />
-        <Route path="/login" component={LoginView} />
-        <Route path="/panel" component={PanelView} />
-        <Redirect to="/" />
-      </Switch>
-    </Router>
+    <>
+      <Router>
+        <Topbar />
+        <Switch>
+          <Route exact path="/" component={HomeView} />
+          <Route path="/login" component={LoginView} />
+          <Route path="/panel" component={PanelView} />
+          <Redirect to="/" />
+        </Switch>
+      </Router>
+    </>
   );
 };
 

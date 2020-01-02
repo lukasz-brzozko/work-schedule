@@ -45,6 +45,10 @@
           box-sizing: content-box;
           cursor: pointer;
         }
+        &--active {
+          background-color: darken(#a9b4c2, 30%);
+          cursor: default;
+        }
       }
     }
     &-logo {
