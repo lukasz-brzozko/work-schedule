@@ -1,20 +1,27 @@
 //Font
 $html-fz: 10px;
-$web-font: 'Roboto',
-sans-serif;
+$web-font: "Roboto", sans-serif;
 $title-fz: 2.5rem;
 $higher-title-fz: 3rem;
 $label-fz: 2.6rem;
 $result-fz: 3.2rem;
 
+//Colors
+$nav-color: #ffc728;
+$nav-hover-color: #a9b4c2;
+$arr-color: #777;
+
+$yes-btn-color: #169d50;
+$no-btn-color: #c0392b;
+$reset-btn-color: #f4b400;
+$send-btn-color: #8bb538;
 
 //Dimensions
 $inp-h: 75px;
 $inp-marg-bot: 20px;
 
-$btn-bgc: rgba(0, 0, 0, .4);
+$btn-bgc: rgba(0, 0, 0, 0.4);
 $btn-h: 60px;
-$arr-color: #777;
 
 $cont-h: 15vh;
 $cont-minh: 75px;

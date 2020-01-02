@@ -60,7 +60,7 @@ class Topbar extends React.Component {
                 to={"/"}
                 className="topbar__menu-item-link"
                 activeClassName={"topbar__menu-item-link--active"}
-                label="Strona główna"
+                title="Strona główna"
                 onClick={e => this.checkIfLinkShouldBeDisabled(e, "/")}
               >
                 <HomeLogo />
@@ -71,7 +71,7 @@ class Topbar extends React.Component {
                 to="/panel"
                 className="topbar__menu-item-link"
                 activeClassName={"topbar__menu-item-link--active"}
-                label="Panel administracyjny"
+                title="Panel administracyjny"
                 onClick={e => this.checkIfLinkShouldBeDisabled(e, "/panel")}
               >
                 <UserLogo />
@@ -82,6 +82,7 @@ class Topbar extends React.Component {
                 <button
                   href="#"
                   className="topbar__menu-item-link topbar__menu-item-link--sign-out"
+                  title="Wyloguj"
                   onClick={this.signUserOut}
                 >
                   <LogoutLogo />

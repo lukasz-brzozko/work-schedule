@@ -1,3 +1,4 @@
+@import "./_variables";
 @import "./_mixins";
 .topbar {
   position: absolute;
@@ -39,6 +40,14 @@
         height: 30px;
         width: 30px;
         padding: 10px;
+        fill: #fff;
+        transition: fill 0.2s;
+        @include mq($desktop-w) {
+          &:hover {
+            fill: $nav-hover-color;
+          }
+        }
+
         &--sign-out {
           border: none;
           background-color: transparent;
@@ -46,7 +55,7 @@
           cursor: pointer;
         }
         &--active {
-          background-color: darken(#a9b4c2, 30%);
+          fill: $nav-color;
           cursor: default;
         }
       }

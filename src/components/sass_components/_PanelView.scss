@@ -1,3 +1,6 @@
+@import "./_mixins";
+@import "./_variables";
+
 .panel-view {
   margin-top: 40px;
   &__form {
@@ -39,11 +42,11 @@
       border: none;
       transition: box-shadow 0.3s;
       &-success {
-        color: #169d50;
+        color: $yes-btn-color;
         font-weight: bold;
       }
       &-fail {
-        box-shadow: 0 0 0 4px #c0392b;
+        box-shadow: 0 0 0 4px $no-btn-color;
       }
     }
   }
@@ -59,14 +62,35 @@
     font-size: 2rem;
     border-radius: 10px;
     border: none;
-    background-color: #91bd3a;
+    background-color: $send-btn-color;
+    transition: background-color 0.1s;
     color: #fff;
     cursor: pointer;
+    &:disabled {
+      background-color: gray;
+      opacity: 0.8;
+      cursor: default;
+      user-select: none;
+      &:hover {
+        background-color: gray;
+      }
+    }
+    @include mq($desktop-w) {
+      &:hover {
+        background-color: lighten($send-btn-color, 2%);
+      }
+    }
 
     &--reset {
       margin-top: 40px;
       color: #000;
-      background-color: lighten(#f4b400, 10%);
+      background-color: $reset-btn-color;
+      transition: background-color 0.1s;
+      @include mq($desktop-w) {
+        &:hover {
+          background-color: lighten($reset-btn-color, 5%);
+        }
+      }
     }
   }
   &__mode {

@@ -22,7 +22,8 @@ class PanelView extends React.Component {
     sendingSuccess: false,
     sendingFailed: false,
     isConfirmationVisible: false,
-    dbResetActive: false
+    dbResetActive: false,
+    isFormFilled: false
   };
 
   addAuthListening = () => {
@@ -63,19 +64,19 @@ class PanelView extends React.Component {
   };
   handleDateInputChange = (e, dayId = 1) => {
     if (dayId === 1) {
-      return this.setState({ firstDay: e.target.value });
+      this.setState({ firstDay: e.target.value });
+    } else {
+      this.setState({ secondDay: e.target.value });
     }
-    this.setState({ secondDay: e.target.value });
   };
-  showConfirmation = (e, mode) => {
+  showConfirmation = (e, modeVariant) => {
+    const { mode, firstDay, secondDay, txtInputValue } = this.state;
     e.preventDefault();
-    if (mode === "send") {
-      if (this.state.firstDay && this.state.txtInputValue) {
+    if (modeVariant === "send") {
+      if (firstDay && txtInputValue) {
         if (
-          this.state.mode === "day" ||
-          (this.state.mode === "range" &&
-            this.state.secondDay &&
-            this.state.secondDay > this.state.firstDay)
+          mode === "day" ||
+          (mode === "range" && secondDay && secondDay > firstDay)
         ) {
           this.confirmationTxt = "Czy na pewno wysłać?";
           this.setState({
@@ -175,22 +176,32 @@ class PanelView extends React.Component {
   }
 
   render() {
+    const {
+      mode,
+      isConfirmationVisible,
+      firstDay,
+      secondDay,
+      txtInputValue,
+      sendingSuccess,
+      sendingFailed,
+      logged,
+      dbResetActive
+    } = this.state;
+
     if (this.topbar) {
-      this.state.isConfirmationVisible
+      isConfirmationVisible
         ? this.topbar.classList.add("topbar--blurred")
         : this.topbar.classList.remove("topbar--blurred");
     }
 
     return (
       <>
-        {this.state.logged && (
+        {logged && (
           <>
             <section className="panel-view">
               <form
                 className={`panel-view__form${
-                  this.state.isConfirmationVisible
-                    ? " panel-view__form--blurred"
-                    : ""
+                  isConfirmationVisible ? " panel-view__form--blurred" : ""
                 }`}
               >
                 <select
@@ -209,14 +220,14 @@ class PanelView extends React.Component {
                   <Input
                     modifier="--smaller"
                     name="first-day"
-                    value={this.state.firstDay}
+                    value={firstDay}
                     change={e => this.handleDateInputChange(e, 1)}
                   />
-                  {this.state.mode === "range" && (
+                  {mode === "range" && (
                     <Input
                       modifier="--smaller"
                       name="second-day"
-                      value={this.state.secondDay}
+                      value={secondDay}
                       change={e => this.handleDateInputChange(e, 2)}
                     />
                   )}
@@ -226,17 +237,11 @@ class PanelView extends React.Component {
                   type="text"
                   placeholder="Dodaj opis"
                   className={`panel-view__input panel-view__input--text${
-                    this.state.sendingSuccess
-                      ? " panel-view__input--text-success"
-                      : ""
-                  }${
-                    this.state.sendingFailed
-                      ? " panel-view__input--text-fail"
-                      : ""
-                  }`}
+                    sendingSuccess ? " panel-view__input--text-success" : ""
+                  }${sendingFailed ? " panel-view__input--text-fail" : ""}`}
                   maxLength={20}
                   minLength={3}
-                  value={this.state.txtInputValue}
+                  value={txtInputValue}
                   onChange={this.handleTxtInputChange}
                   required
                 />
@@ -245,6 +250,19 @@ class PanelView extends React.Component {
                   onClick={e => {
                     this.showConfirmation(e, "send");
                   }}
+                  disabled={
+                    !(
+                      (firstDay &&
+                        txtInputValue &&
+                        mode === "day" &&
+                        sendingSuccess === false) ||
+                      (firstDay &&
+                        secondDay &&
+                        txtInputValue &&
+                        mode === "range" &&
+                        sendingSuccess === false)
+                    )
+                  }
                 >
                   Wyślij
                 </button>
@@ -257,13 +275,9 @@ class PanelView extends React.Component {
                   Resetuj bazę
                 </button>
               </form>
-              {this.state.isConfirmationVisible && (
+              {isConfirmationVisible && (
                 <ConfirmationWidget
-                  yesBtn={
-                    this.state.dbResetActive
-                      ? this.resetDB
-                      : this.sendToDatabase
-                  }
+                  yesBtn={dbResetActive ? this.resetDB : this.sendToDatabase}
                   noBtn={this.hideConfirmationWidget}
                 >
                   {this.confirmationTxt}
