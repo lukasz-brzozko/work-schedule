@@ -3,17 +3,18 @@ import Input from "./Input";
 import Loader from "./Loader";
 import DayInfo from "./DayInfo";
 import Arrows from "./Arrows";
-import { today } from "./GlobalVars";
+import GlobalVars from "./GlobalVars";
 import { getDatabase } from "../common/firebase";
 import moment from "moment";
 import "moment/locale/pl";
+
 class HomeView extends React.Component {
   constructor() {
     super();
     this.noDataTxt = "BRAK DANYCH";
   }
   state = {
-    inputValue: today,
+    inputValue: GlobalVars.today,
     todayResultContent: "",
     oneDayLaterResultContent: "",
     twoDaysLaterResultContent: "",
@@ -114,13 +115,15 @@ class HomeView extends React.Component {
 
   componentDidMount() {
     this.checkStateForMobComp();
-    this.fetchData(today);
+    this.fetchData(GlobalVars.today);
     window.addEventListener("resize", this.checkStateForMobComp);
   }
   componentWillUnmount() {
     window.removeEventListener("resize", this.checkStateForMobComp);
   }
   render() {
+    const { maxYearValue, minYearValue } = GlobalVars;
+
     return (
       <React.Fragment>
         {/* <Topbar /> */}
@@ -129,6 +132,8 @@ class HomeView extends React.Component {
             <Input
               value={this.state.inputValue}
               change={this.handleInputChange}
+              min={minYearValue}
+              max={maxYearValue}
             />
             <div className="container main">
               {this.state.isLoaderVisible && <Loader />}

@@ -1,14 +1,20 @@
 import React from "react";
 
-const Input = props => (
-  <input
-    type="date"
-    className={`date${props.modifier ? " date" + props.modifier : ""}`}
-    value={props.value}
-    onChange={props.change}
-    placeholder="Wybierz datę"
-    required
-  />
-);
+const Input = props => {
+  const { modifier, value, change, min, max } = props;
+
+  return (
+    <input
+      type="date"
+      className={`date${modifier ? " date" + modifier : ""}`}
+      value={value}
+      onChange={change}
+      placeholder="Wybierz datę"
+      required
+      min={min}
+      max={max}
+    />
+  );
+};
 
 export default Input;
