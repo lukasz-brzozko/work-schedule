@@ -11,8 +11,10 @@ import "moment/locale/pl";
 class HomeView extends React.Component {
   constructor() {
     super();
+    this.queryParam = "date";
     this.noDataTxt = "BRAK DANYCH";
   }
+
   state = {
     inputValue: GlobalVars.today,
     todayResultContent: "",
@@ -20,26 +22,28 @@ class HomeView extends React.Component {
     twoDaysLaterResultContent: "",
     threeDaysLaterResultContent: "",
     isLoaderVisible: true,
-    mobCompisVisible: false
+    mobCompisVisible: false,
   };
 
-  handleInputChange = e => {
+  handleInputChange = (e) => {
+    const value = e.target.value;
+
     this.setState({
-      inputValue: e.target.value,
+      inputValue: value,
       todayResultContent: "",
       oneDayLaterResultContent: "",
       twoDaysLaterResultContent: "",
       threeDaysLaterResultContent: "",
-      isLoaderVisible: true
+      isLoaderVisible: true,
     });
-    this.fetchData(e.target.value);
+    this.fetchData(value);
   };
-  handleButtonClick = e => {
+  handleButtonClick = (e) => {
     const nextDaysSec = document.getElementById("next-days");
     nextDaysSec.scrollIntoView({
       behavior: "smooth",
       block: "center",
-      inline: "center"
+      inline: "center",
     });
   };
 
@@ -49,7 +53,7 @@ class HomeView extends React.Component {
     else this.setState({ mobCompisVisible: false });
   };
 
-  setTxtColor = content => {
+  setTxtColor = (content) => {
     switch (content) {
       case "NA DZIEŃ":
         return " day";
@@ -67,55 +71,75 @@ class HomeView extends React.Component {
       todayResultContent: this.noDataTxt,
       oneDayLaterResultContent: this.noDataTxt,
       twoDaysLaterResultContent: this.noDataTxt,
-      threeDaysLaterResultContent: this.noDataTxt
+      threeDaysLaterResultContent: this.noDataTxt,
     });
   };
 
-  fetchData = async startDate => {
+  fetchData = async (startDate, init = false) => {
     moment.locale("pl");
+    let requestedDate = startDate;
 
-    if (!startDate) {
+    if (init) {
+      requestedDate = this.getQueryParam(this.queryParam);
+    }
+
+    if (!requestedDate) {
       this.setNoData();
       return;
     }
     const nextDates = [];
     for (let i = 1; i < 4; i++) {
-      const date = moment(startDate)
-        .add(i, "days")
-        .format("YYYY-MM-DD");
+      const date = moment(requestedDate).add(i, "days").format("YYYY-MM-DD");
       nextDates.push(date);
     }
 
     const db = await getDatabase();
     db.ref(`/workdays2`)
       .orderByKey()
-      .startAt(startDate)
+      .startAt(requestedDate)
       .endAt(nextDates[nextDates.length - 1])
       .once(
         "value",
-        snap => {
+        (snap) => {
           const data = snap.val();
           if (data) {
             this.setState({
               isLoaderVisible: false,
-              todayResultContent: data[startDate] || this.noDataTxt,
+              todayResultContent: data[requestedDate] || this.noDataTxt,
               oneDayLaterResultContent: data[nextDates[0]] || this.noDataTxt,
               twoDaysLaterResultContent: data[nextDates[1]] || this.noDataTxt,
-              threeDaysLaterResultContent: data[nextDates[2]] || this.noDataTxt
+              threeDaysLaterResultContent: data[nextDates[2]] || this.noDataTxt,
             });
           } else {
             this.setNoData();
           }
         },
-        err => {
+        (err) => {
           console.log(err);
         }
       );
   };
 
+  isDateFormatValid = (data) => {
+    const isValid = moment(data, "YYYY-MM-DD", true).isValid();
+    return isValid;
+  };
+
+  getQueryParam = (param) => {
+    const urlParams = new URLSearchParams(this.props.location.search);
+    const myParam = urlParams.get(param);
+
+    const isDataValid = this.isDateFormatValid(myParam);
+    if (isDataValid) {
+      this.setState({ inputValue: myParam });
+      return myParam;
+    }
+    return GlobalVars.today;
+  };
+
   componentDidMount() {
     this.checkStateForMobComp();
-    this.fetchData(GlobalVars.today);
+    this.fetchData(this.state.inputValue, true);
     window.addEventListener("resize", this.checkStateForMobComp);
   }
   componentWillUnmount() {
@@ -123,7 +147,6 @@ class HomeView extends React.Component {
   }
   render() {
     const { maxYearValue, minYearValue } = GlobalVars;
-
     return (
       <React.Fragment>
         {/* <Topbar /> */}
@@ -139,8 +162,10 @@ class HomeView extends React.Component {
               {this.state.isLoaderVisible && <Loader />}
               <span
                 id="main-result"
-                className={`result${this.state.todayResultContent &&
-                  this.setTxtColor(this.state.todayResultContent)}`}
+                className={`result${
+                  this.state.todayResultContent &&
+                  this.setTxtColor(this.state.todayResultContent)
+                }`}
               >
                 {this.state.todayResultContent}
               </span>
