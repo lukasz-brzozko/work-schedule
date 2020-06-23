@@ -49,7 +49,20 @@
         box-shadow: 0 0 0 4px $no-btn-color;
       }
     }
+    &--checkbox {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
   }
+  &__label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: #fff;
+  }
+
   &__button {
     font-family: "Roboto", sans-serif;
     display: block;

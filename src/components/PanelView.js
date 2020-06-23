@@ -3,6 +3,7 @@ import { getAuth, getDatabase } from "../common/firebase";
 import Input from "./Input";
 import ConfirmationWidget from "./ConfirmationWidget";
 import moment from "moment";
+import InputcheckBox from "./InputCheckbox";
 
 class PanelView extends React.Component {
   constructor() {
@@ -11,6 +12,10 @@ class PanelView extends React.Component {
     this.user = null;
     this.confirmationTxt = "";
     this.topbar = null;
+    this.notification = {
+      url: "https://onesignal.com/api/v1/notifications",
+      key: null,
+    };
   }
   state = {
     txtInputValue: "",
@@ -23,15 +28,16 @@ class PanelView extends React.Component {
     sendingFailed: false,
     isConfirmationVisible: false,
     dbResetActive: false,
-    isFormFilled: false
+    isFormFilled: false,
+    sendNotificationInputChecked: true,
   };
 
   addAuthListening = () => {
     const auth = getAuth();
-    const ref = auth.onAuthStateChanged(user => {
+    const ref = auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({
-          logged: true
+          logged: true,
         });
       } else {
         this.props.history.replace("/login");
@@ -45,22 +51,33 @@ class PanelView extends React.Component {
     auth.signOut();
     this.props.history.goBack();
   };
-  handleModeSelectionChange = e => {
+  handleModeSelectionChange = (e) => {
+    const value = e.target.value;
+
+    if (value === "day") {
+      this.setState({ secondDay: "" });
+    }
     this.setState({ mode: e.target.value });
   };
 
-  hideSendingSuccess = e => {
+  hideSendingSuccess = (e) => {
     this.setState({
       sendingSuccess: false,
-      txtInputValue: ""
+      txtInputValue: "",
     });
   };
 
-  handleTxtInputChange = e => {
+  handleTxtInputChange = (e) => {
     this.setState({
       txtInputValue: e.target.value,
-      sendingFailed: false
+      sendingFailed: false,
     });
+  };
+
+  handleCheckboxInputChange = () => {
+    this.setState((prevState) => ({
+      sendNotificationInputChecked: !prevState.sendNotificationInputChecked,
+    }));
   };
   handleDateInputChange = (e, dayId = 1) => {
     if (dayId === 1) {
@@ -81,7 +98,7 @@ class PanelView extends React.Component {
           this.confirmationTxt = "Czy na pewno wysłać?";
           this.setState({
             isConfirmationVisible: true,
-            dbResetActive: false
+            dbResetActive: false,
           });
         }
       }
@@ -90,30 +107,108 @@ class PanelView extends React.Component {
         "Czy na pewno chcesz zrestować bazę danych od dnia dzisiejszego?";
       this.setState({
         isConfirmationVisible: true,
-        dbResetActive: true
+        dbResetActive: true,
       });
     }
   };
   hideConfirmationWidget = () => {
     this.setState({ isConfirmationVisible: false });
   };
-  updateDatabase = async (path = "workdays2", payload) => {
+
+  setMaxMinForInputDate = (date, mode = "add") => {
+    let newDate = date;
+    if (date) {
+      newDate = moment(date)[mode](1, "d").format("YYYY-MM-DD");
+    }
+    return newDate;
+  };
+
+  getAdminKey = async () => {
     const db = await getDatabase();
-    db.ref(path).update(payload, err => {
+    try {
+      await db
+        .ref("admin/key")
+        .once("value", (snapshot) => (this.notification.key = snapshot.val()));
+    } catch (err) {
+      this.notification.key = null;
+    }
+  };
+
+  updateDatabase = async (path = "workdays2", payload, isResetMode = false) => {
+    const db = await getDatabase();
+    db.ref(path).update(payload, (err) => {
       if (!err) {
         this.setState({
           txtInputValue: "Sukces \u2713",
-          sendingSuccess: true
+          sendingSuccess: true,
         });
+        if (!isResetMode) {
+          let message = "";
+
+          const Objkeys = Object.keys(payload)
+          const formatedDates = this.formatDate(Objkeys)
+
+          if (Objkeys.length > 1) {
+            const startDate = formatedDates[0].slice(0, 5)
+            const endDate = formatedDates[Objkeys.length - 1].slice(0, 5)
+
+            message += `${startDate} - ${endDate}: ${payload[Objkeys[0]]}`;
+          }
+          else {
+            message += `${formatedDates[0]}: ${payload[Objkeys[0]]}`;
+          }
+
+          message = message.trim();
+
+          if (this.state.sendNotificationInputChecked) {
+            const dateToUrl = Objkeys[0];
+
+            this.sendNotification(message, dateToUrl);
+          }
+        }
         setTimeout(this.hideSendingSuccess, 2000);
         return;
       }
       return this.setState({
-        sendingFailed: true
+        sendingFailed: true,
       });
     });
   };
-  sendToDatabase = async e => {
+
+  formatDate = (dateArr) => {
+
+    const formatedDates = dateArr.map(date => moment(date).format('DD.MM.YYYY'))
+    return formatedDates
+  }
+
+  sendNotification = (message, dateToUrl) => {
+    const { key, url } = this.notification;
+
+    if (key) {
+      var headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Basic ${key}`,
+      };
+
+      var payload = {
+        app_id: "70cb9b8b-12ad-4124-9681-f7fea8f6abb0",
+        included_segments: ["All"],
+        headings: { en: "Aktualizacja grafiku" },
+        contents: { en: message },
+        url: `https://grafik.brzozko.pl/?date=${dateToUrl}`,
+      };
+
+      var options = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(payload),
+      };
+
+      fetch(url, options);
+    }
+  };
+
+  sendToDatabase = async (e) => {
     const { mode } = this.state;
     this.hideConfirmationWidget();
     const txtInputValue = this.state.txtInputValue.toUpperCase();
@@ -121,7 +216,7 @@ class PanelView extends React.Component {
     if (txtInputValue && firstDay) {
       if (mode === "day") {
         const payload = {
-          [firstDay]: txtInputValue
+          [firstDay]: txtInputValue,
         };
         this.updateDatabase("workdays2", payload);
       } else {
@@ -139,7 +234,7 @@ class PanelView extends React.Component {
 
             const dateInFormat = `${year}-${month < 10 ? "0" + month : month}-${
               day < 10 ? "0" + day : day
-            }`;
+              }`;
             payload[dateInFormat] = txtInputValue;
           }
           this.updateDatabase("workdays2", payload);
@@ -151,10 +246,10 @@ class PanelView extends React.Component {
     this.hideConfirmationWidget();
     const db = await getDatabase();
     let data = null;
-    await db.ref("/workdays-copy").once("value", snap => {
+    await db.ref("/workdays-copy").once("value", (snap) => {
       data = snap.val();
     });
-    this.updateDatabase("workdays2", data);
+    this.updateDatabase("workdays2", data, true);
   };
   signUserOut = () => {
     const auth = getAuth();
@@ -169,6 +264,7 @@ class PanelView extends React.Component {
   componentDidMount() {
     this.getUnsubscribeRef = this.addAuthListening();
     this.getTopbarElement();
+    this.getAdminKey();
   }
 
   componentWillUnmount() {
@@ -185,7 +281,7 @@ class PanelView extends React.Component {
       sendingSuccess,
       sendingFailed,
       logged,
-      dbResetActive
+      dbResetActive,
     } = this.state;
 
     if (this.topbar) {
@@ -202,7 +298,7 @@ class PanelView extends React.Component {
               <form
                 className={`panel-view__form${
                   isConfirmationVisible ? " panel-view__form--blurred" : ""
-                }`}
+                  }`}
               >
                 <select
                   className="panel-view__mode-selection"
@@ -221,14 +317,20 @@ class PanelView extends React.Component {
                     modifier="--smaller"
                     name="first-day"
                     value={firstDay}
-                    change={e => this.handleDateInputChange(e, 1)}
+                    max={
+                      this.state.mode === "range"
+                        ? this.setMaxMinForInputDate(secondDay, "subtract")
+                        : null
+                    }
+                    change={(e) => this.handleDateInputChange(e, 1)}
                   />
                   {mode === "range" && (
                     <Input
                       modifier="--smaller"
                       name="second-day"
                       value={secondDay}
-                      change={e => this.handleDateInputChange(e, 2)}
+                      min={this.setMaxMinForInputDate(firstDay, "add")}
+                      change={(e) => this.handleDateInputChange(e, 2)}
                     />
                   )}
                 </div>
@@ -238,16 +340,21 @@ class PanelView extends React.Component {
                   placeholder="Dodaj opis"
                   className={`panel-view__input panel-view__input--text${
                     sendingSuccess ? " panel-view__input--text-success" : ""
-                  }${sendingFailed ? " panel-view__input--text-fail" : ""}`}
+                    }${sendingFailed ? " panel-view__input--text-fail" : ""}`}
                   maxLength={20}
                   minLength={3}
                   value={txtInputValue}
                   onChange={this.handleTxtInputChange}
                   required
                 />
+                <InputcheckBox
+                  checked={this.state.sendNotificationInputChecked}
+                  change={this.handleCheckboxInputChange}
+                />
+
                 <button
                   className="panel-view__button panel-view__button--send"
-                  onClick={e => {
+                  onClick={(e) => {
                     this.showConfirmation(e, "send");
                   }}
                   disabled={
@@ -268,7 +375,7 @@ class PanelView extends React.Component {
                 </button>
                 <button
                   className="panel-view__button panel-view__button--reset"
-                  onClick={e => {
+                  onClick={(e) => {
                     this.showConfirmation(e, "reset");
                   }}
                 >
