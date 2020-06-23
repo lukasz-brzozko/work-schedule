@@ -1,26 +1,26 @@
-@import '_variables.scss';
-@import '_mixins.scss';
+@import "_variables.scss";
+@import "_mixins.scss";
 
 .flex-wrapper {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: $flexwrap-marg-bot;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $flexwrap-marg-bot;
 
-    .label {
-        font-size: $label-fz;
-        color: #eee;
-        text-align: center;
+  .label {
+    font-size: $label-fz;
+    color: #eee;
+    text-align: center;
+  }
+
+  .container {
+    position: relative;
+    @include box-style;
+
+    &.next {
+      margin-top: $cont-marg-top;
+      height: $cont-h;
+      max-height: $cont-maxh;
+      min-height: $cont-minh;
     }
-
-    .container {
-        position: relative;
-        @include box-style;
-
-        &.next {
-            margin-top: $cont-marg-top;
-            height: $cont-h;
-            max-height: $cont-maxh;
-            min-height: $cont-minh;
-        }
-    }
+  }
 }

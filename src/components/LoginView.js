@@ -1,14 +1,14 @@
 import React from "react";
 import * as firebase from "firebase/app";
 import { getAuth } from "../common/firebase";
-import firebaseui from "firebaseui/dist/npm__pl";
+import * as firebaseui from "firebaseui";
 class LoginView extends React.Component {
   constructor() {
     super();
     this.getUnsubscribeRef = null;
   }
   state = {
-    loading: true
+    loading: true,
   };
 
   generateFirebaseUI = () => {
@@ -18,28 +18,22 @@ class LoginView extends React.Component {
     }
     const uiConfig = {
       callbacks: {
-        signInSuccessWithAuthResult: (authResult, redirectUrl = "/panel") => {
-          // this.setState({ logged: true });
-          // this.props.history.push({
-          //   pathname: redirectUrl
-          // });
-        },
+        signInSuccessWithAuthResult: (authResult, redirectUrl = "/panel") => {},
         uiShown: () => {
           this.setState({ loading: false });
-        }
+        },
       },
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
 
-      signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
+      signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
     };
     ui.start("#firebaseui-auth-container", uiConfig);
   };
 
   addAuthListening = () => {
     const auth = getAuth();
-    const ref = auth.onAuthStateChanged(user => {
+    const ref = auth.onAuthStateChanged((user) => {
       if (user) {
-        // this.props.history.push("/panel");
         this.props.history.replace("/panel");
       } else {
         this.generateFirebaseUI();
@@ -59,7 +53,6 @@ class LoginView extends React.Component {
   render() {
     return (
       <>
-        {/* <Topbar /> */}
         <div
           id="firebaseui-auth-container"
           className="firebaseui-auth-container"
