@@ -301,7 +301,7 @@ class PanelView extends React.Component {
                 }`}
               >
                 <label
-                  className="panel-view__mode-selection-label"
+                  className="panel-view__mode-selection-label input__label"
                   htmlFor="mode"
                 >
                   Wybierz tryb

@@ -32,8 +32,8 @@
     font-family: "Roboto", sans-serif;
     &--text {
       box-sizing: border-box;
-      height: 70px;
-      width: 90%;
+      height: 60px;
+      width: 80%;
       max-width: 350px;
       margin: 10px 0 30px;
       padding: 10px;
@@ -111,7 +111,7 @@
     &-selection {
       display: block;
       box-sizing: border-box;
-      height: 70px;
+      height: 60px;
       width: 50%;
       max-width: 300px;
       margin: 0 0 20px;
@@ -123,8 +123,10 @@
       cursor: pointer;
 
       &-label {
-        @include label;
         margin: 20px 0 10px;
+        @include mq($small-w) {
+          margin-top: 50px;
+        }
       }
     }
     &-option {
