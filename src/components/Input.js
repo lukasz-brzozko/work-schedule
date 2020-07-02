@@ -1,21 +1,32 @@
 import React from "react";
 
-const Input = (props) => {
-  const { modifier, value, change, min, max } = props;
-
+const Input = ({
+  modifier,
+  value,
+  name,
+  labelContent,
+  change,
+  min,
+  max,
+  id,
+}) => {
   return (
-    <input
-      type="date"
-      id="date"
-      name="date"
-      className={`date${modifier ? " date" + modifier : ""}`}
-      value={value}
-      onChange={change}
-      placeholder="Wybierz datę"
-      required
-      min={min}
-      max={max}
-    />
+    <div className="input__container">
+      <label className="input__label" htmlFor={id}>
+        {labelContent}
+      </label>
+      <input
+        type="date"
+        id={id}
+        name={name}
+        className={`input date${modifier ? " date" + modifier : ""}`}
+        value={value}
+        onChange={change}
+        required
+        min={min}
+        max={max}
+      />
+    </div>
   );
 };
 

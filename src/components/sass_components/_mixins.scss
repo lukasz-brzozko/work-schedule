@@ -7,6 +7,11 @@
   text-align: center;
 }
 
+@mixin label {
+  font-size: 2rem;
+  color: #fff;
+}
+
 @mixin title-txt {
   font-size: $title-fz;
   color: #fff;

@@ -145,16 +145,15 @@ class PanelView extends React.Component {
         if (!isResetMode) {
           let message = "";
 
-          const Objkeys = Object.keys(payload)
-          const formatedDates = this.formatDate(Objkeys)
+          const Objkeys = Object.keys(payload);
+          const formatedDates = this.formatDate(Objkeys);
 
           if (Objkeys.length > 1) {
-            const startDate = formatedDates[0].slice(0, 5)
-            const endDate = formatedDates[Objkeys.length - 1].slice(0, 5)
+            const startDate = formatedDates[0].slice(0, 5);
+            const endDate = formatedDates[Objkeys.length - 1].slice(0, 5);
 
             message += `${startDate} - ${endDate}: ${payload[Objkeys[0]]}`;
-          }
-          else {
+          } else {
             message += `${formatedDates[0]}: ${payload[Objkeys[0]]}`;
           }
 
@@ -176,10 +175,11 @@ class PanelView extends React.Component {
   };
 
   formatDate = (dateArr) => {
-
-    const formatedDates = dateArr.map(date => moment(date).format('DD.MM.YYYY'))
-    return formatedDates
-  }
+    const formatedDates = dateArr.map((date) =>
+      moment(date).format("DD.MM.YYYY")
+    );
+    return formatedDates;
+  };
 
   sendNotification = (message, dateToUrl) => {
     const { key, url } = this.notification;
@@ -234,7 +234,7 @@ class PanelView extends React.Component {
 
             const dateInFormat = `${year}-${month < 10 ? "0" + month : month}-${
               day < 10 ? "0" + day : day
-              }`;
+            }`;
             payload[dateInFormat] = txtInputValue;
           }
           this.updateDatabase("workdays2", payload);
@@ -298,9 +298,16 @@ class PanelView extends React.Component {
               <form
                 className={`panel-view__form${
                   isConfirmationVisible ? " panel-view__form--blurred" : ""
-                  }`}
+                }`}
               >
+                <label
+                  className="panel-view__mode-selection-label"
+                  htmlFor="mode"
+                >
+                  Wybierz tryb
+                </label>
                 <select
+                  id="mode"
                   className="panel-view__mode-selection"
                   onChange={this.handleModeSelectionChange}
                   defaultValue="day"
@@ -314,9 +321,11 @@ class PanelView extends React.Component {
                 </select>
                 <div className="panel-view__date-container">
                   <Input
+                    id="dateFrom"
                     modifier="--smaller"
                     name="first-day"
                     value={firstDay}
+                    labelContent={`Wybierz dzień${mode === "day" ? "" : " od"}`}
                     max={
                       this.state.mode === "range"
                         ? this.setMaxMinForInputDate(secondDay, "subtract")
@@ -326,9 +335,11 @@ class PanelView extends React.Component {
                   />
                   {mode === "range" && (
                     <Input
+                      id="dateTo"
                       modifier="--smaller"
                       name="second-day"
                       value={secondDay}
+                      labelContent="Wybierz dzień do"
                       min={this.setMaxMinForInputDate(firstDay, "add")}
                       change={(e) => this.handleDateInputChange(e, 2)}
                     />
@@ -340,7 +351,7 @@ class PanelView extends React.Component {
                   placeholder="Dodaj opis"
                   className={`panel-view__input panel-view__input--text${
                     sendingSuccess ? " panel-view__input--text-success" : ""
-                    }${sendingFailed ? " panel-view__input--text-fail" : ""}`}
+                  }${sendingFailed ? " panel-view__input--text-fail" : ""}`}
                   maxLength={20}
                   minLength={3}
                   value={txtInputValue}

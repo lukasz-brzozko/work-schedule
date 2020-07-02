@@ -26,6 +26,7 @@
     justify-content: space-evenly;
     align-items: center;
     min-height: 33vh;
+    margin: 20px 0;
   }
   &__input {
     font-family: "Roboto", sans-serif;
@@ -113,13 +114,18 @@
       height: 70px;
       width: 50%;
       max-width: 300px;
-      margin: 20px 0;
+      margin: 0 0 20px;
       padding: 10px;
       font-size: 2rem;
       border-radius: 10px;
       border: none;
       background-color: #fff;
       cursor: pointer;
+
+      &-label {
+        @include label;
+        margin: 20px 0 10px;
+      }
     }
     &-option {
       border-radius: 10px;
