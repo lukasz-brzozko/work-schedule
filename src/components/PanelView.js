@@ -346,18 +346,26 @@ class PanelView extends React.Component {
                   )}
                 </div>
 
-                <input
-                  type="text"
-                  placeholder="Dodaj opis"
-                  className={`panel-view__input panel-view__input--text${
-                    sendingSuccess ? " panel-view__input--text-success" : ""
-                  }${sendingFailed ? " panel-view__input--text-fail" : ""}`}
-                  maxLength={20}
-                  minLength={3}
-                  value={txtInputValue}
-                  onChange={this.handleTxtInputChange}
-                  required
-                />
+                <div className="input__container">
+                  <label
+                    htmlFor="description"
+                    className="panel-view__input-label input__label"
+                  >
+                    Dodaj opis
+                  </label>
+                  <input
+                    type="text"
+                    id="description"
+                    className={`panel-view__input panel-view__input--text${
+                      sendingSuccess ? " panel-view__input--text-success" : ""
+                    }${sendingFailed ? " panel-view__input--text-fail" : ""}`}
+                    maxLength={20}
+                    minLength={3}
+                    value={txtInputValue}
+                    onChange={this.handleTxtInputChange}
+                    required
+                  />
+                </div>
                 <InputcheckBox
                   checked={this.state.sendNotificationInputChecked}
                   change={this.handleCheckboxInputChange}
