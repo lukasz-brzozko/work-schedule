@@ -54,7 +54,6 @@ Aktualizacja danych, znajdujących się w bazie danych czasu rzeczywistego Fireb
 ### Przygotowanie danych do wysłania (Google Apps Script)
 
 ```
-
 function formatSprDataBeforeSending() {
   const ss = SpreadsheetApp.getActiveSheet();
   const formattedDataObject = {};
@@ -76,7 +75,6 @@ function formatSprDataBeforeSending() {
 
   sendDataToFirebaseDB(formattedDataObject);
 }
-
 ```
 
 ### Wysłanie danych do bazy Firebase (Google Apps Script)
@@ -97,7 +95,6 @@ function sendDataToFirebaseDB(payload) {
     sendDataToFirebaseDB(payload);
   }
 }
-
 ```
 
 ## Meta
