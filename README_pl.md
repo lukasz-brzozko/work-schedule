@@ -51,29 +51,9 @@ Generowanie nowych danych odbywa się za pomocą [Arkuszy Google](https://www.go
 
 Aktualizacja danych, znajdujących się w bazie danych czasu rzeczywistego Firebase, danymi wygenerowanymi w Arkuszach Google, odbywa się z wykorzystaniem [Firebase Realtime Database REST API](https://firebase.google.com/docs/database/rest/start).
 
-```
-//FUNKCJA ODPOWIEDZIALNA ZA WYSŁANIE DANYCH DO BAZY FIREBASE (GOOGLE APPS SCRIPT)
-
-function sendDataToFirebaseDB(payload) {
-  const url = FIREBASE_UTILS.DB_URL + FIREBASE_UTILS.DB_SECRET_KEY;
-  const options = {
-    method: "put",
-    contentType: "application/json",
-    payload: JSON.stringify(payload),
-  };
-
-  try {
-    UrlFetchApp.fetch(url, options);
-  } catch (e) {
-    Utilities.sleep(10000);
-    sendDataToFirebaseDB(payload);
-  }
-}
+### Przygotowanie danych do wysłania (Google Apps Script)
 
 ```
-
-```
-//FUNKCJA ODPOWIEDZIALNA ZA PRZYGOTOWANIE DANYCH DO WYSŁANIA (GOOGLE APPS SCRIPT)
 
 function formatSprDataBeforeSending() {
   const ss = SpreadsheetApp.getActiveSheet();
@@ -95,6 +75,27 @@ function formatSprDataBeforeSending() {
   }
 
   sendDataToFirebaseDB(formattedDataObject);
+}
+
+```
+
+### Wysłanie danych do bazy Firebase (Google Apps Script)
+
+```
+function sendDataToFirebaseDB(payload) {
+  const url = FIREBASE_UTILS.DB_URL + FIREBASE_UTILS.DB_SECRET_KEY;
+  const options = {
+    method: "put",
+    contentType: "application/json",
+    payload: JSON.stringify(payload),
+  };
+
+  try {
+    UrlFetchApp.fetch(url, options);
+  } catch (e) {
+    Utilities.sleep(10000);
+    sendDataToFirebaseDB(payload);
+  }
 }
 
 ```
