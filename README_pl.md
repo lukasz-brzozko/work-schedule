@@ -1,4 +1,4 @@
-b[English](README.md) :point_left:
+[English](README.md) :point_left:
 
 [![Ikona kalendarza](./readme-assets/logo128.png)](https://grafik.brzozko.pl/)
 
@@ -25,7 +25,7 @@ Progresywna aplikacja webowa (PWA) pozwala na przeprowadzenie instalacji z pozio
 
 Przedstawiany grafik pracy składa się z następującego schematu:
 
-| Lp. | Zmiana (Oznaczenie w aplikacji) |                                             |
+| Lp. | Zmiana (Oznaczenie w aplikacji) | Uwagi                                       |
 | --- | ------------------------------- | ------------------------------------------- |
 | 1.  | Dzienna zmiana (na dzień)       |
 | 2.  | Nocna zmiana (na noc)           |
@@ -46,6 +46,8 @@ Generowanie nowych danych odbywa się za pomocą [Arkuszy Google](https://www.go
 |_Wycinek bazy danych w Arkuszach Google_|
 
 </br>
+
+## Aktualizacja danych
 
 Aktualizacja danych, znajdujących się w bazie danych czasu rzeczywistego Firebase, danymi wygenerowanymi w Arkuszach Google, odbywa się z wykorzystaniem [Firebase Realtime Database REST API](https://firebase.google.com/docs/database/rest/start).
 
