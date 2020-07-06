@@ -40,7 +40,7 @@ Użytkownik posiada możliwość sprawdzenia grafiku z maksymalnie rocznym wyprz
 
 ## Generowanie danych
 
-Generowanie nowych danych odbywa się za pomocą [Arkuszy Google](https://www.google.pl/intl/pl/sheets/about/). Następnie dane przesyłane są do [Firebase Realtime Database](https://firebase.google.com/docs/database/).
+Generowanie nowych danych odbywa się za pomocą [Arkuszy Google](https://www.google.pl/intl/pl/sheets/about/). Następnie dane przesyłane są do [Firebase Realtime Database](https://firebase.google.com/docs/database/), które z kolei są wykorzystywane przez aplikację.
 |![Presentation](readme-assets/sheetsDB.png)|
 |:---:|
 |_Wycinek bazy danych w Arkuszach Google_|
