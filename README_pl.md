@@ -36,7 +36,9 @@ Przedstawiany grafik pracy składa się z następującego schematu:
 
 Aplikacja domyślnie wyświetla grafik pracy na podstawie obecnej daty.
 
-Użytkownik posiada możliwość sprawdzenia grafiku z maksymalnie rocznym wyprzedzeniem. Historia grafiku wynosi także 1 rok od obecnej daty.
+Użytkownik posiada możliwość sprawdzenia grafiku z maksymalnie rocznym wyprzedzeniem. Dzięki temu możliwe jest wcześniejsze zaplanowanie świąt, urlopu bądź innych wydarzeń.
+
+Historia grafiku wynosi także jeden rok od obecnej daty.
 
 ## Generowanie danych
 
