@@ -25,13 +25,13 @@ Progresywna aplikacja webowa (PWA) pozwala na przeprowadzenie instalacji z pozio
 
 Przedstawiany grafik pracy składa się z następującego schematu:
 
-| Lp. | Zmiana (Oznaczenie w aplikacji) | Uwagi                                       |
-| --- | ------------------------------- | ------------------------------------------- |
+| Lp. | Zmiana (Oznaczenie w aplikacji) | Uwagi                                           |
+| --- | ------------------------------- | ----------------------------------------------- |
 | 1.  | Dzienna zmiana (na dzień)       |
 | 2.  | Nocna zmiana (na noc)           |
 | 3.  | Dzień wolny (po nocy)           |
 | 4.  | Dzień wolny (wolne)             |
-| 5.  | Dzienna zmiana (na dzień)       | :arrow_left: zmiana zaczyna się od początku |
+| 5.  | Dzienna zmiana (na dzień)       | :arrow_backward: zmiana zaczyna się od początku |
 | 6.  | ⋮                               |
 
 Aplikacja domyślnie wyświetla grafik pracy na podstawie obecnej daty.
@@ -96,6 +96,49 @@ function sendDataToFirebaseDB(payload) {
   }
 }
 ```
+
+## Powiadomienia
+
+Aplikacja umożliwia, po uzyskaniu zgody użytkownika, otrzymywanie powiadomień, informujących o fakcie dokonania zmiany w grafiku. Do przesyłania powiadomień wykorzystano [OneSignal](https://onesignal.com/).
+
+</br>
+
+| Przeglądarka          |                          Powiadomienie                          |
+| --------------------- | :-------------------------------------------------------------: |
+| Google Chrome Desktop |        ![Powiadomienie](readme-assets/notification.png)         |
+| Google Chrome Mobile  | ![Powiadomienie mobilne](readme-assets/notification-mobile.png) |
+
+</br>
+
+## Panel administratora
+
+Aplikacja oferuje panel administracyjny, dzięki któremu możliwe jest wprowadzanie zmian w grafiku (np. wpisanie urlopu).
+
+Edycja zmian oferuje następujące tryby edycji:
+
+</br>
+
+| Tryb       | Opis                                                |
+| ---------- | --------------------------------------------------- |
+| Dzień      | Pozwala na edycję grafiku dla konkretnej daty       |
+| Zakres dni | Pozwala na edycję grafiku dla zakresu dat (od - do) |
+
+</br>
+
+Dodatkowo, podczas każdej zmiany, użytkownik decyduje, czy chce powiadomić pozostałych, subskrybujących użytkowników o wprowadzonej edycji.
+
+</br>
+
+<div align="center">
+  <img height="500" src="./readme-assets/admin-panel.gif" alt="Prezentacja głównego widoku aplikacji" />
+  <p><em>Panel administracyjny</em></p>
+</div>
+
+</br>
+
+Logowanie do panelu odbywa się z wykorzystaniem [FirebaseUI](https://github.com/firebase/firebaseui-web).
+
+Za weryfikację uprawnień do wprowadzania zmian odpowiadają [Firebase Realtime Database Rules](https://firebase.google.com/docs/database/security).
 
 ## Meta
 
