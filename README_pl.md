@@ -105,10 +105,10 @@ Aplikacja umożliwia, po uzyskaniu zgody użytkownika, otrzymywanie powiadomień
 
 </br>
 
-| Przeglądarka          |                          Powiadomienie                          |
-| --------------------- | :-------------------------------------------------------------: |
-| Google Chrome Desktop |        ![Powiadomienie](readme-assets/notification.png)         |
-| Google Chrome Mobile  | ![Powiadomienie mobilne](readme-assets/notification-mobile.png) |
+| Przeglądarka          |                           Powiadomienie                           |
+| --------------------- | :---------------------------------------------------------------: |
+| Google Chrome Desktop | ![Powiadomienie w wersji desktop](readme-assets/notification.png) |
+| Google Chrome Mobile  |  ![Powiadomienie mobilne](readme-assets/notification-mobile.png)  |
 
 </br>
 
@@ -132,7 +132,7 @@ Dodatkowo, podczas każdej zmiany, użytkownik decyduje, czy chce powiadomić po
 </br>
 
 <div align="center">
-  <img height="500" src="./readme-assets/admin-panel.gif" alt="Prezentacja głównego widoku aplikacji" />
+  <img height="500" src="./readme-assets/admin-panel.gif" alt="Prezentacja panelu administratora w aplikacji" />
   <p><em>Panel administracyjny</em></p>
 </div>
 
