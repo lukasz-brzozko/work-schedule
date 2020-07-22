@@ -1,68 +1,151 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Polish](README_pl.md) :point_left:
 
-## Available Scripts
+[![Calendar icon](./readme-assets/logo128.png)](https://grafik.brzozko.pl/)
 
-In the project directory, you can run:
+# Work schedule
 
-### `npm start`
+> A progressive web application (PWA) with an administration panel, presenting the work schedule for the days selected by the user.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+ </br>
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+<p align="center">
+  <img height="500" src="./readme-assets/presentation.gif" alt="Presentation of the main view of the application" />
+</p>
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The progressive web application (PWA) allows installations from a browser (Google Chrome recommended).
+|Instruction |Attachment |
+| ------------------------------------------------------ | :----------------------------------------: |
+| 1. Visit https://florian-8cd60.web.app/ | |
+| 2. In the address bar, press the "plus" symbol | ![Installation bar](readme-assets/install.png) |
+| 3. Select "Install"|
 
-### `npm run build`
+## Schedule
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The presented work schedule consists of the following diagram:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+| Nr  | Shift (Designation in the app)      | Comments                        |
+| --- | ----------------------------------- | ------------------------------- |
+| 1.  | Day shift (na dzień)                |
+| 2.  | Night shift (na noc)                |
+| 3.  | Day off after night shift (po nocy) |
+| 4.  | Day off (wolne)                     |
+| 5.  | Day shift (na dzień)                | :arrow_backward: schedule reset |
+| 6.  | ⋮                                   |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+By default, the application displays a work schedule based on the current date.
 
-### `npm run eject`
+The user has the option to check the schedule up to one year in advance. Thanks to this, it is possible to plan holidays, holidays or other events in advance.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The history of the work schedule is also one year from the present date.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Generating data
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Generating new data is done using [Google Sheets](https://www.google.pl/intl/pl/sheets/about/). Then the data is sent to the [Firebase Realtime Database](https://firebase.google.com/docs/database/), which in turn is used by the application.
+|![Spreadsheet data presentation](readme-assets/sheetsDB.png)|
+|:---:|
+|_Part of the database in Google Sheets_|
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+</br>
 
-## Learn More
+## Data update
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Updating the data contained in the Firebase real-time database, with data generated in Google Sheets, takes place using the [Firebase Realtime Database REST API](https://firebase.google.com/docs/database/rest/start).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Preparation of data for sending (Google Apps Script)
 
-### Code Splitting
+```
+function formatSprDataBeforeSending() {
+  const ss = SpreadsheetApp.getActiveSheet();
+  const formattedDataObject = {};
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+  for (
+    let i = SPREADSHEET_CONSTANTS.DATA_ROW_START;
+    i <= SPREADSHEET_CONSTANTS.DATA_ROW_END;
+    i++
+  ) {
+    const date = ss
+      .getRange(i, SPREADSHEET_CONSTANTS.DATE_COL)
+      .getDisplayValue();
+    const work = ss
+      .getRange(i, SPREADSHEET_CONSTANTS.WORK_COL)
+      .getDisplayValue();
 
-### Analyzing the Bundle Size
+    formattedDataObject[date] = work;
+  }
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+  sendDataToFirebaseDB(formattedDataObject);
+}
+```
 
-### Making a Progressive Web App
+### Sending data to the Firebase Database (Google Apps Script)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```
+function sendDataToFirebaseDB(payload) {
+  const url = FIREBASE_UTILS.DB_URL + FIREBASE_UTILS.DB_SECRET_KEY;
+  const options = {
+    method: "put",
+    contentType: "application/json",
+    payload: JSON.stringify(payload),
+  };
 
-### Advanced Configuration
+  try {
+    UrlFetchApp.fetch(url, options);
+  } catch (e) {
+    Utilities.sleep(10000);
+    sendDataToFirebaseDB(payload);
+  }
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## Notifications
 
-### Deployment
+The application allows, after obtaining the user's permission, to receive notifications informing about the fact of changing the schedule. [OneSignal](https://onesignal.com/) was used to send notifications.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+</br>
 
-### `npm run build` fails to minify
+| Browser               |                           Notification                           |
+| --------------------- | :--------------------------------------------------------------: |
+| Google Chrome Desktop |    ![Desktop notification](readme-assets/notification-en.png)    |
+| Google Chrome Mobile  | ![Mobile notification](readme-assets/notification-mobile-en.png) |
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+</br>
+
+## Administrator panel
+
+The application offers an administration panel, thanks to which it is possible to make changes to the schedule (e.g. entering a vacation).
+
+Editing changes offers the following editing modes:
+
+</br>
+
+| Mode       | Description                                                |
+| ---------- | ---------------------------------------------------------- |
+| Day        | Allows to edit a schedule for a specific date              |
+| Days range | Allows to edit a schedule for a range of dates (from - to) |
+
+</br>
+
+Additionally, during each change, the user decides whether he wants to notify other subscribing users about the introduced edition.
+
+</br>
+
+<div align="center">
+  <img height="500" src="./readme-assets/admin-panel.gif" alt="Presentation of the admin panel in the application" />
+  <p><em>Administrator panel</em></p>
+</div>
+
+</br>
+
+Logging in to the panel is done using [FirebaseUI](https://github.com/firebase/firebaseui-web).
+
+[Firebase Realtime Database Rules](https://firebase.google.com/docs/database/security) are responsible for verifying user's permission to make changes.
+
+## Meta
+
+Łukasz Brzózko – lukasz@brzozko.pl
+
+Distributed under the MIT license. See `LICENSE` for more information.
+
+[https://github.com/lukasz-brzozko](https://github.com/lukasz-brzozko)
