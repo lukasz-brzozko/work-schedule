@@ -17,7 +17,7 @@
 The progressive web application (PWA) allows installations from a browser (Google Chrome recommended).
 |Instruction |Attachment |
 | ------------------------------------------------------ | :----------------------------------------: |
-| 1. Visit https://florian-8cd60.web.app/ | |
+| 1. Visit https://grafik.brzozko.pl/ | |
 | 2. In the address bar, press the "plus" symbol | ![Installation bar](readme-assets/install.png) |
 | 3. Select "Install"|
 
